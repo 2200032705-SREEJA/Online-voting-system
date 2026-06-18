@@ -1,99 +1,403 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Login</title>
-
+    <title>Admin Login | VoteBharat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
 
-        body{
-            margin:0;
-            font-family:Segoe UI;
-            background:linear-gradient(135deg,#0f172a,#1e293b);
-            height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4ff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .card{
-            width:400px;
-            background:white;
-            padding:40px;
-            border-radius:20px;
-            box-shadow:0 20px 40px rgba(0,0,0,.3);
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 860px;
+            min-height: 560px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.15);
         }
 
-        h2{
-            text-align:center;
-            margin-bottom:25px;
+        /* ── LEFT PANEL ── */
+        .left-panel {
+            flex: 1;
+            background: linear-gradient(145deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 36px 32px;
+            position: relative;
+            overflow: hidden;
         }
 
-        input{
-            width:100%;
-            padding:14px;
-            margin-bottom:15px;
-            border:1px solid #ddd;
-            border-radius:10px;
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 240px; height: 240px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
         }
 
-        button{
-            width:100%;
-            padding:14px;
-            border:none;
-            background:#2563eb;
-            color:white;
-            border-radius:10px;
-            font-size:16px;
-            cursor:pointer;
+        .left-panel::after {
+            content: '';
+            position: absolute;
+            bottom: -40px; left: -40px;
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
         }
 
-        button:hover{
-            background:#1d4ed8;
+        .lp-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 2;
         }
 
-        .error{
-            color:red;
-            text-align:center;
-            margin-bottom:15px;
+        .lp-brand-icon {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lp-brand-icon i { font-size: 18px; color: #fff; }
+
+        .lp-brand-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.02em;
+        }
+
+        .lp-illo {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lp-illo svg { width: 260px; }
+
+        .lp-tagline {
+            position: relative;
+            z-index: 2;
+        }
+
+        .lp-tagline h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+
+        .lp-tagline p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.6;
+        }
+
+        /* ── RIGHT PANEL ── */
+        .right-panel {
+            width: 360px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 44px 36px;
+        }
+
+        .rp-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6366f1;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .rp-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .rp-sub {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+        /* Error */
+        .error-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        /* Form */
+        .form-lbl {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+            letter-spacing: 0.02em;
+        }
+
+        .inp-wrap {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .inp-wrap .inp-icon {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #94a3b8;
+            pointer-events: none;
+        }
+
+        .inp-wrap input {
+            width: 100%;
+            padding: 11px 14px 11px 38px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            color: #0f172a;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #f8fafc;
+        }
+
+        .inp-wrap input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+            background: #fff;
+        }
+
+        .inp-wrap input::placeholder { color: #cbd5e1; }
+
+        .eye-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 14px;
+            padding: 0;
+        }
+
+        .forgot {
+            display: block;
+            text-align: right;
+            font-size: 12px;
+            color: #6366f1;
+            text-decoration: none;
+            margin-top: -10px;
+            margin-bottom: 22px;
+        }
+
+        .forgot:hover { color: #4f46e5; }
+
+        /* Login button */
+        .btn-login {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+            transition: transform 0.15s, box-shadow 0.2s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(99,102,241,0.45);
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .divider span { font-size: 12px; color: #cbd5e1; white-space: nowrap; }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e2e8f0; }
+
+        .btn-back {
+            width: 100%;
+            padding: 11px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            background: #fff;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            text-decoration: none;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .btn-back:hover { background: #f8fafc; border-color: #cbd5e1; }
+
+        .rp-footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 11px;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .left-panel { display: none; }
+            .right-panel { width: 100%; border-radius: 20px; }
         }
 
     </style>
-
 </head>
-
 <body>
 
-<div class="card">
+<div class="container">
 
-    <h2>Admin Login</h2>
+    <!-- LEFT: Illustration panel -->
+    <div class="left-panel">
+        <div class="lp-brand">
+            <div class="lp-brand-icon"><i class="fas fa-vote-yea"></i></div>
+            <span class="lp-brand-name">VoteBharat</span>
+        </div>
 
-    {% if error %}
-    <div class="error">{{ error }}</div>
-    {% endif %}
+        <div class="lp-illo">
+            <svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg">
+                <rect x="30" y="130" width="200" height="8" rx="4" fill="rgba(255,255,255,0.15)"/>
+                <rect x="110" y="90" width="90" height="60" rx="6" fill="rgba(255,255,255,0.18)"/>
+                <rect x="115" y="95" width="80" height="48" rx="4" fill="rgba(255,255,255,0.25)"/>
+                <rect x="120" y="100" width="70" height="6" rx="3" fill="rgba(255,255,255,0.5)"/>
+                <rect x="120" y="110" width="50" height="4" rx="2" fill="rgba(255,255,255,0.3)"/>
+                <rect x="120" y="118" width="60" height="4" rx="2" fill="rgba(255,255,255,0.3)"/>
+                <rect x="120" y="126" width="40" height="4" rx="2" fill="rgba(255,255,255,0.3)"/>
+                <rect x="148" y="138" width="14" height="14" rx="2" fill="rgba(255,255,255,0.15)"/>
+                <rect x="50" y="90" width="50" height="40" rx="6" fill="rgba(255,255,255,0.12)"/>
+                <circle cx="75" cy="75" r="18" fill="rgba(255,255,255,0.2)"/>
+                <rect x="60" y="95" width="30" height="4" rx="2" fill="rgba(255,255,255,0.4)"/>
+                <rect x="65" y="103" width="20" height="3" rx="1.5" fill="rgba(255,255,255,0.25)"/>
+                <rect x="65" y="110" width="20" height="3" rx="1.5" fill="rgba(255,255,255,0.25)"/>
+                <circle cx="75" cy="75" r="10" fill="rgba(255,255,255,0.35)"/>
+                <circle cx="75" cy="72" r="5" fill="rgba(255,255,255,0.6)"/>
+                <path d="M65 82 Q75 78 85 82" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" fill="none"/>
+                <rect x="80" y="56" width="22" height="14" rx="4" fill="#60a5fa"/>
+                <text x="91" y="66" text-anchor="middle" font-size="8" fill="white" font-weight="700">!</text>
+                <polygon points="80,70 84,66 80,66" fill="#60a5fa"/>
+                <circle cx="195" cy="100" r="16" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                <path d="M195 93 L195 105 M189 99 L201 99" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="40" cy="110" r="10" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                <path d="M36 110 L40 114 L44 106" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+        </div>
 
-    <form method="POST" action="/adminauthenticate">
+        <div class="lp-tagline">
+            <h2>Secure Admin<br>Dashboard Access</h2>
+            <p>Monitor elections, manage voters,<br>and oversee the democratic process.</p>
+        </div>
+    </div>
 
-        {% csrf_token %}
+    <!-- RIGHT: Form panel -->
+    <div class="right-panel">
+        <div class="rp-label">Admin Portal</div>
+        <div class="rp-title">Welcome back</div>
+        <div class="rp-sub">Sign in to access the admin dashboard</div>
 
-        <input
-            type="text"
-            name="username"
-            placeholder="Admin Username"
-            required
-        >
+        {% if error %}
+        <div class="error-box">
+            <i class="fas fa-times-circle"></i> {{ error }}
+        </div>
+        {% endif %}
 
-        <input
-            type="password"
-            name="password"
-            placeholder="Admin Password"
-            required
-        >
+        <form method="POST" action="/adminauthenticate">
+            {% csrf_token %}
 
-        <button type="submit">
-            Login
-        </button>
+            <label class="form-lbl">Username</label>
+            <div class="inp-wrap">
+                <i class="fas fa-user inp-icon"></i>
+                <input type="text" name="username" placeholder="Admin username" required>
+            </div>
 
-    </form>
+            <label class="form-lbl">Password</label>
+            <div class="inp-wrap">
+                <i class="fas fa-lock inp-icon"></i>
+                <input type="password" name="password" placeholder="Enter password" id="pw" required>
+                <button type="button" class="eye-toggle" onclick="var p=document.getElementById('pw');p.type=p.type==='password'?'text':'password';this.querySelector('i').className=p.type==='password'?'fas fa-eye':'fas fa-eye-slash'">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+            <button type="submit" class="btn-login">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+        </form>
+
+        <div class="divider"><span>or</span></div>
+
+        <a href="{% url 'root' %}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to main site
+        </a>
+
+        <div class="rp-footer">
+            <i class="fas fa-lock" style="font-size:10px;"></i>
+            Secured · VoteBharat Admin
+        </div>
+    </div>
 
 </div>
 

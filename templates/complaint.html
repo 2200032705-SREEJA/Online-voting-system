@@ -3,183 +3,428 @@
 
 <style>
 
-body{
-    background:#081120;
+body {
+    background: #060d1a;
 }
 
-.feedback-section{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:50px 20px;
+.feedback-section {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 15% 40%, rgba(255,153,51,0.18) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 20%, rgba(19,136,8,0.15) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 90%, rgba(0,0,128,0.22) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(255,153,51,0.08) 0%, transparent 40%),
+        linear-gradient(145deg, #060d1a 0%, #0a1525 40%, #0d1c30 70%, #081120 100%);
 }
 
-.feedback-card{
-    width:100%;
-    max-width:650px;
-    background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(15px);
-    border:1px solid rgba(255,255,255,0.15);
-    border-radius:20px;
-    padding:40px;
-    color:white;
-    box-shadow:0 10px 30px rgba(0,0,0,.4);
+.feedback-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
 }
 
-.feedback-title{
-    text-align:center;
-    margin-bottom:10px;
-    font-size:38px;
-    font-weight:700;
+.feedback-section::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #FF9933 33.3%, #ffffff 33.3% 66.6%, #138808 66.6%);
+    pointer-events: none;
+    z-index: 1;
 }
 
-.feedback-subtitle{
-    text-align:center;
-    color:#d1d5db;
-    margin-bottom:30px;
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
 }
 
-.success-msg{
-    background:#22c55e;
-    color:white;
-    padding:12px;
-    border-radius:10px;
-    text-align:center;
-    margin-bottom:20px;
-    font-weight:600;
+.orb-1 {
+    top: 8%; left: 5%;
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, rgba(255,153,51,0.07) 0%, transparent 70%);
 }
 
-.form-group{
-    margin-bottom:20px;
+.orb-2 {
+    bottom: 10%; right: 4%;
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(19,136,8,0.08) 0%, transparent 70%);
 }
 
-.form-group label{
-    display:block;
-    margin-bottom:8px;
-    font-weight:600;
+.orb-3 {
+    top: 38%; left: 58%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(0,0,128,0.12) 0%, transparent 70%);
 }
 
-.form-control{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:10px;
-    background:rgba(255,255,255,0.12);
-    color:white;
-    font-size:15px;
-    outline:none;
+.feedback-wrapper {
+    width: 100%;
+    max-width: 620px;
 }
 
-.form-control::placeholder{
-    color:#cbd5e1;
+/* Header */
+.feedback-header {
+    text-align: center;
+    margin-bottom: 32px;
 }
 
-textarea.form-control{
-    resize:none;
-    min-height:140px;
+.feedback-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(59,130,246,0.12);
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #60a5fa;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
 }
 
-.btn-row{
-    display:flex;
-    gap:15px;
-    margin-top:25px;
+.feedback-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 10px;
 }
 
-.submit-btn{
-    flex:1;
-    padding:14px;
-    border:none;
-    border-radius:10px;
-    background:#16a34a;
-    color:white;
-    font-size:16px;
-    font-weight:600;
-    cursor:pointer;
+.feedback-subtitle {
+    color: #94a3b8;
+    font-size: 15px;
+    margin: 0;
 }
 
-.submit-btn:hover{
-    background:#15803d;
+/* Main card */
+.feedback-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
 }
 
-.back-btn{
-    flex:1;
-    text-align:center;
-    text-decoration:none;
-    padding:14px;
-    border-radius:10px;
-    background:#dc2626;
-    color:white;
-    font-size:16px;
-    font-weight:600;
+/* Trust bar */
+.trust-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-.back-btn:hover{
-    background:#b91c1c;
+.trust-item {
+    padding: 18px 10px;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.trust-item:last-child {
+    border-right: none;
+}
+
+.trust-item i {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.trust-item span {
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+}
+
+.trust-item.secure i  { color: #4ade80; }
+.trust-item.response i { color: #60a5fa; }
+.trust-item.admin i   { color: #fbbf24; }
+
+/* Form body */
+.form-body {
+    padding: 32px;
+}
+
+/* Success message */
+.success-msg {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(74,222,128,0.12);
+    border: 1px solid rgba(74,222,128,0.3);
+    color: #4ade80;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Form grid */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-bottom: 8px;
+}
+
+.form-group label i {
+    font-size: 14px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-control:focus {
+    border-color: rgba(255,153,51,0.5);
+    background: rgba(255,255,255,0.08);
+}
+
+.form-control::placeholder {
+    color: #475569;
+}
+
+select.form-control option {
+    background: #1e293b;
+    color: #fff;
+}
+
+textarea.form-control {
+    resize: none;
+    min-height: 130px;
+    line-height: 1.6;
+}
+
+/* Buttons */
+.btn-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #16a34a;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.submit-btn:hover {
+    background: #15803d;
+    transform: translateY(-1px);
+}
+
+.submit-btn i {
+    font-size: 16px;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05);
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+
+.back-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+.back-btn i {
+    font-size: 16px;
+}
+
+/* Footer note */
+.privacy-note {
+    text-align: center;
+    font-size: 12px;
+    color: #475569;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+/* Responsive */
+@media (max-width: 520px) {
+    .form-row { grid-template-columns: 1fr; }
+    .btn-row { grid-template-columns: 1fr; }
+    .back-btn { justify-content: center; }
+    .form-body { padding: 24px; }
+    .feedback-title { font-size: 24px; }
 }
 
 </style>
 
 <div class="feedback-section">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="feedback-wrapper" style="position:relative; z-index:2;">
 
-```
-<div class="feedback-card">
+    <!-- Header -->
+    <div class="feedback-header">
+      <div class="feedback-badge">
+        <i class="fas fa-comment-dots"></i> VoteBharat Support
+      </div>
+      <h1 class="feedback-title">Feedback &amp; Complaints</h1>
+      <p class="feedback-subtitle">Help us improve the Online Voting System by sharing your experience.</p>
+    </div>
 
-    <h1 class="feedback-title">Feedback & Complaints</h1>
+    <!-- Card -->
+    <div class="feedback-card">
 
-    <p class="feedback-subtitle">
-        Help us improve the Online Voting System by sharing your feedback.
+      <!-- Trust bar -->
+      <div class="trust-bar">
+        <div class="trust-item secure">
+          <i class="fas fa-shield-alt"></i>
+          <span>Secure &amp; Private</span>
+        </div>
+        <div class="trust-item response">
+          <i class="fas fa-clock"></i>
+          <span>24hr Response</span>
+        </div>
+        <div class="trust-item admin">
+          <i class="fas fa-user-shield"></i>
+          <span>Admin Reviewed</span>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="form-body">
+
+        {% if msg %}
+        <div class="success-msg">
+          <i class="fas fa-check-circle"></i> {{ msg }}
+        </div>
+        {% endif %}
+
+        <form action="{% url 'submitfeedback' %}" method="post">
+          {% csrf_token %}
+
+          <div class="form-row">
+            <div class="form-group" style="margin-bottom:0;">
+              <label>
+                <i class="fas fa-user"></i> Full name
+              </label>
+              <input type="text" name="name" class="form-control"
+                     placeholder="Your full name" required>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label>
+                <i class="fas fa-phone"></i> Mobile number
+              </label>
+              <input type="tel" name="number" class="form-control"
+                     placeholder="+91 XXXXX XXXXX" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <i class="fas fa-envelope"></i> Email address
+            </label>
+            <input type="email" name="email" class="form-control"
+                   placeholder="you@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <i class="fas fa-tag"></i> Category
+            </label>
+            <select name="category" class="form-control">
+              <option value="">Select a category</option>
+              <option value="login">Login / Registration issue</option>
+              <option value="voting">Voting problem</option>
+              <option value="bug">Technical bug</option>
+              <option value="suggestion">General suggestion</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <i class="fas fa-pen"></i> Issue / suggestion
+            </label>
+            <textarea name="issue" class="form-control"
+                      placeholder="Describe your issue or suggestion in detail..."
+                      required></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button type="submit" class="submit-btn">
+              <i class="fas fa-paper-plane"></i> Submit feedback
+            </button>
+            <a href="{% url 'home' %}" class="back-btn">
+              <i class="fas fa-arrow-left"></i> Back
+            </a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <p class="privacy-note">
+      <i class="fas fa-lock"></i>
+      Your submission is private and visible only to administrators.
     </p>
 
-    {% if msg %}
-        <div class="success-msg">
-            {{ msg }}
-        </div>
-    {% endif %}
-
-    <form action="{% url 'submitfeedback' %}" method="post">
-        {% csrf_token %}
-
-        <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" name="name" class="form-control"
-                   placeholder="Enter your full name" required>
-        </div>
-
-        <div class="form-group">
-            <label>Mobile Number</label>
-            <input type="tel" name="number" class="form-control"
-                   placeholder="Enter your mobile number" required>
-        </div>
-
-        <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" name="email" class="form-control"
-                   placeholder="Enter your email" required>
-        </div>
-
-        <div class="form-group">
-            <label>Issue / Suggestion</label>
-            <textarea name="issue" class="form-control"
-                      placeholder="Describe your issue or suggestion..."
-                      required></textarea>
-        </div>
-
-        <div class="btn-row">
-            <button type="submit" class="submit-btn">
-                Submit Feedback
-            </button>
-
-            <a href="{% url 'home' %}" class="back-btn">
-                Back Home
-            </a>
-        </div>
-
-    </form>
-
-</div>
-```
-
+  </div>
 </div>
 
 {% endblock %}

@@ -400,6 +400,196 @@
       line-height: 1.5;
     }
 
+    /* ── LEARN ABOUT VOTING SECTION ── */
+    .learn-voting {
+      background: #f8fafc;
+      padding: 90px 60px;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto 50px auto;
+    }
+
+    .section-header h2 {
+      font-size: 42px;
+      font-weight: 800;
+      color: #121A2E;
+      margin-bottom: 15px;
+    }
+
+    .section-header h2 span {
+      color: #FF9933;
+    }
+
+    .section-header p {
+      color: #555;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    /* What is online voting */
+    .what-is-box {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 60px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      border-left: 5px solid #FF9933;
+    }
+
+    .what-is-icon {
+      font-size: 50px;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .what-is-content h3 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #121A2E;
+      margin-bottom: 14px;
+    }
+
+    .what-is-content p {
+      color: #555;
+      line-height: 1.8;
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    .what-is-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Steps grid */
+    .steps-heading {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: #121A2E;
+      margin-bottom: 30px;
+    }
+
+    .learn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-bottom: 70px;
+    }
+
+    .learn-card {
+      background: white;
+      padding: 30px 25px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+      border-top: 4px solid transparent;
+    }
+
+    .learn-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+      border-top-color: #FF9933;
+    }
+
+    .learn-card .step-num {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 48px;
+      font-weight: 800;
+      color: rgba(255,153,51,0.08);
+      line-height: 1;
+    }
+
+    .learn-card .card-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(255,153,51,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .learn-card i {
+      font-size: 22px;
+      color: #FF9933;
+    }
+
+    .learn-card h3 {
+      margin-bottom: 10px;
+      color: #121A2E;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .learn-card p {
+      color: #666;
+      line-height: 1.7;
+      font-size: 13.5px;
+    }
+
+    /* Benefits */
+    .benefits-box {
+      background: #121A2E;
+      border-radius: 24px;
+      padding: 50px 40px;
+      text-align: center;
+    }
+
+    .benefits-box h2 {
+      color: #fff;
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .benefits-box .benefits-sub {
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 36px;
+      font-size: 15px;
+    }
+
+    .benefit-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .benefit-item {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 20px 18px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+      transition: 0.25s;
+    }
+
+    .benefit-item:hover {
+      background: rgba(255,153,51,0.12);
+      border-color: rgba(255,153,51,0.3);
+    }
+
+    .benefit-emoji {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       nav { padding: 0 24px; }
@@ -408,15 +598,21 @@
       .chakra-wrap { display: none; }
       .bottom-cards { padding: 0 24px 40px; }
       .bottom-grid { grid-template-columns: repeat(2, 1fr); }
+      .learn-voting { padding: 60px 24px; }
+      .what-is-box { flex-direction: column; gap: 20px; padding: 28px; }
+      .section-header h2 { font-size: 30px; }
+      .benefits-box { padding: 36px 24px; }
     }
     @media (max-width: 560px) {
       .bottom-grid { grid-template-columns: 1fr; }
       .cta-group { flex-direction: column; }
       .btn { justify-content: center; }
+      .benefit-list { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
+
 <div class="hero">
 
   <!-- Tricolor stripe -->
@@ -425,11 +621,9 @@
   <!-- Navbar -->
   <nav>
     <a href="{% url 'root' %}" class="nav-logo">
-      <!-- Mini Ashoka Chakra SVG as logo -->
       <svg class="emblem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
         <circle cx="20" cy="20" r="18" fill="none" stroke="#FF9933" stroke-width="2"/>
         <circle cx="20" cy="20" r="6" fill="none" stroke="#000080" stroke-width="2"/>
-        <!-- 12 spokes -->
         <g stroke="#000080" stroke-width="1.2">
           <line x1="20" y1="14" x2="20" y2="3"/>
           <line x1="20" y1="26" x2="20" y2="37"/>
@@ -450,7 +644,6 @@
     <ul class="nav-links">
       <li><a href="{% url 'login' %}">Login</a></li>
       <li><a href="{% url 'signup' %}">Register</a></li>
-      <li><a href="{% url 'candidateinformation' %}">Candidates</a></li>
       <li><a href="{% url 'adminlogin' %}" class="btn-admin"><i class="fas fa-shield-alt"></i> Admin</a></li>
     </ul>
   </nav>
@@ -477,20 +670,18 @@
         <a href="{% url 'signup' %}" class="btn btn-outline">
           <i class="fas fa-user-plus"></i> New Registration
         </a>
-        <a href="{% url 'candidateinformation' %}" class="btn btn-ghost">
-          <i class="fas fa-info-circle"></i> Learn More
+        <a href="#learn-voting" class="btn btn-ghost">
+          <i class="fas fa-book-open"></i> Learn About Voting
         </a>
       </div>
       <div class="features">
         <span class="feature-pill"><i class="fas fa-check-circle"></i> Secure & Encrypted</span>
         <span class="feature-pill"><i class="fas fa-check-circle"></i> One Vote Per Voter</span>
-        <span class="feature-pill"><i class="fas fa-check-circle"></i> Live Results</span>
         <span class="feature-pill"><i class="fas fa-check-circle"></i> Aadhar Verified</span>
       </div>
     </div>
 
     <div class="right">
-      <!-- Spinning Ashoka Chakra background -->
       <svg class="chakra-wrap" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
         <circle cx="100" cy="100" r="95" fill="none" stroke="white" stroke-width="4"/>
         <circle cx="100" cy="100" r="28" fill="none" stroke="white" stroke-width="4"/>
@@ -510,7 +701,6 @@
         </g>
       </svg>
 
-      <!-- Info Card -->
       <div class="card-main">
         <div class="card-label">🗳️ Election Overview</div>
         <div class="stat-row">
@@ -532,21 +722,11 @@
             <div class="vote-bar-fill"></div>
           </div>
         </div>
-        <div class="vote-bar-section">
-          <div class="vote-bar-label">
-            <span>Votes Counted</span>
-            <span>Live</span>
-          </div>
-          <div class="vote-bar-bg">
-            <div class="vote-bar-fill" style="background: linear-gradient(90deg, #4ADE80, #86efac); animation-delay: 1.2s;"></div>
-          </div>
-        </div>
         <div class="card-footer-note">
           <i class="fas fa-lock"></i> All votes are encrypted end-to-end
         </div>
       </div>
 
-      <!-- Floating verified badge -->
       <div class="badge-float">
         <i class="fas fa-check-circle"></i> Aadhaar Verified System
       </div>
@@ -579,6 +759,95 @@
     </div>
   </div>
 
-</div>
+</div><!-- end .hero -->
+
+<!-- ── LEARN ABOUT VOTING SECTION ── -->
+<section id="learn-voting" class="learn-voting">
+
+  <div class="section-header">
+    <h2>Learn About <span>Online Voting</span></h2>
+    <p>Everything you need to know about India's secure digital election platform — how it works, why it matters, and how to participate with confidence.</p>
+  </div>
+
+  <!-- What is Online Voting -->
+  <div class="what-is-box">
+    <div class="what-is-icon">🗳️</div>
+    <div class="what-is-content">
+      <h3>What is Online Voting?</h3>
+      <p>
+        Online voting (also called e-voting or internet voting) is a system that allows eligible citizens to cast their votes digitally through a secure web or mobile platform — without visiting a physical polling booth. VoteBharat brings this modern approach to Indian democracy.
+      </p>
+      <p>
+        Instead of paper ballots or EVMs at booths, voters authenticate using their Aadhaar-linked credentials and submit their vote through an encrypted connection. The system ensures that each citizen can only vote once, results are counted automatically, and the entire process is tamper-proof and transparent.
+      </p>
+      <p>
+        VoteBharat is designed for accessibility — whether you're in a metro city or a remote village, you can exercise your democratic right from any device with internet access.
+      </p>
+    </div>
+  </div>
+
+  <!-- How It Works Steps -->
+  <p class="steps-heading">How It Works — Step by Step</p>
+
+  <div class="learn-grid">
+    <div class="learn-card">
+      <span class="step-num">1</span>
+      <div class="card-icon-wrap"><i class="fas fa-user-plus"></i></div>
+      <h3>Step 1: Register</h3>
+      <p>Create your account using your name, Aadhaar number, phone number and date of birth. Your identity is verified instantly through the Aadhaar authentication system.</p>
+    </div>
+
+    <div class="learn-card">
+      <span class="step-num">2</span>
+      <div class="card-icon-wrap"><i class="fas fa-sign-in-alt"></i></div>
+      <h3>Step 2: Login Securely</h3>
+      <p>Sign in to the voting portal using your registered username and password. Two-factor authentication ensures only you can access your account.</p>
+    </div>
+
+    <div class="learn-card">
+      <span class="step-num">3</span>
+      <div class="card-icon-wrap"><i class="fas fa-users"></i></div>
+      <h3>Step 3: View Candidates</h3>
+      <p>Browse detailed profiles of all candidates — their party, background, and manifesto highlights — so you can make a well-informed decision before voting.</p>
+    </div>
+
+    <div class="learn-card">
+      <span class="step-num">4</span>
+      <div class="card-icon-wrap"><i class="fas fa-vote-yea"></i></div>
+      <h3>Step 4: Cast Your Vote</h3>
+      <p>Select your preferred candidate and confirm your choice. Once submitted, your vote is locked and cannot be changed — just like a physical ballot.</p>
+    </div>
+
+    <div class="learn-card">
+      <span class="step-num">5</span>
+      <div class="card-icon-wrap"><i class="fas fa-lock"></i></div>
+      <h3>Step 5: Secure Storage</h3>
+      <p>Your vote is encrypted end-to-end using military-grade cryptography and stored securely. No one — not even system administrators — can view how you voted.</p>
+    </div>
+
+    <div class="learn-card">
+      <span class="step-num">6</span>
+      <div class="card-icon-wrap"><i class="fas fa-chart-bar"></i></div>
+      <h3>Step 6: Results</h3>
+      <p>Votes are counted automatically and results are reviewed by the admin. Only authorized administrators can view and announce the final election outcome.</p>
+    </div>
+  </div>
+
+  <!-- Benefits -->
+  <div class="benefits-box">
+    <h2>Why Online Voting?</h2>
+    <p class="benefits-sub">A smarter, fairer, and more inclusive way to run elections</p>
+    <div class="benefit-list">
+      <div class="benefit-item"><span class="benefit-emoji">⚡</span><span>Faster Elections — Results in minutes, not days</span></div>
+      <div class="benefit-item"><span class="benefit-emoji">🔒</span><span>Secure Process — End-to-end encrypted voting</span></div>
+      <div class="benefit-item"><span class="benefit-emoji">📊</span><span>Accurate Count — Zero human error in tallying</span></div>
+      <div class="benefit-item"><span class="benefit-emoji">🌍</span><span>Better Accessibility — Vote from anywhere in India</span></div>
+      <div class="benefit-item"><span class="benefit-emoji">🌱</span><span>Eco-Friendly — Fully paperless, zero waste</span></div>
+      <div class="benefit-item"><span class="benefit-emoji">🤝</span><span>Increased Transparency — Admin-verified results</span></div>
+    </div>
+  </div>
+
+</section>
+
 </body>
 </html>
