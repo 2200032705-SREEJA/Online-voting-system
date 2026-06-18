@@ -69,7 +69,6 @@
             margin-top: 30px;
             font-size: 16px;
             font-weight: 500;
-            color: #28a745;
             text-align: center;
             min-height: 24px;
         }
@@ -134,8 +133,10 @@
 </head>
 <body>
 
+    {% csrf_token %}
+
     <div id="already-voted-banner">
-        ⚠️ You have already cast your vote. Each person can only vote once.
+    ⚠️ You have already cast your vote for {{ voted_party }}. Each person can only vote once.
     </div>
 
     <div id="confirm-overlay">
@@ -180,27 +181,25 @@
     <div id="status-message"></div>
 
 <script>
-    // Django passes already_voted as true/false from the view
-    const alreadyVoted = {{ already_voted|yesno:"true,false" }};
+    const alreadyVoted = "{{ already_voted }}" === "True";
 
-    const allButtons   = document.querySelectorAll('.vote-button');
-    const overlay      = document.getElementById('confirm-overlay');
-    const confirmText  = document.getElementById('confirm-text');
-    const btnConfirm   = document.getElementById('btn-confirm');
-    const btnCancel    = document.getElementById('btn-cancel');
-    const statusMsg    = document.getElementById('status-message');
-    const banner       = document.getElementById('already-voted-banner');
+    const allButtons  = document.querySelectorAll('.vote-button');
+    const overlay     = document.getElementById('confirm-overlay');
+    const confirmText = document.getElementById('confirm-text');
+    const btnConfirm  = document.getElementById('btn-confirm');
+    const btnCancel   = document.getElementById('btn-cancel');
+    const statusMsg   = document.getElementById('status-message');
+    const banner      = document.getElementById('already-voted-banner');
 
     let pendingButton = null;
 
-    // On page load — if user already voted, lock everything
     if (alreadyVoted) {
         banner.style.display = 'block';
         allButtons.forEach(btn => btn.disabled = true);
-        statusMsg.textContent = 'You have already voted. Thank you!';
+        statusMsg.style.color = '#856404';
+        statusMsg.textContent = 'You have already voted for {{ voted_party }}. Thank you!';
     }
 
-    // Open confirm modal
     allButtons.forEach(button => {
         button.addEventListener('click', () => {
             if (alreadyVoted) return;
@@ -210,18 +209,18 @@
         });
     });
 
-    // Cancel
     btnCancel.addEventListener('click', () => {
         overlay.classList.remove('show');
         pendingButton = null;
     });
 
-    // Confirm — sends party to Django backend
     btnConfirm.addEventListener('click', () => {
         overlay.classList.remove('show');
         if (!pendingButton) return;
 
-        const chosenParty = pendingButton.dataset.party;
+        const chosenButton = pendingButton;
+        const chosenParty  = chosenButton.dataset.party;
+        pendingButton = null;
 
         fetch('/castvote', {
             method: 'POST',
@@ -231,7 +230,10 @@
             },
             body: JSON.stringify({ party: chosenParty })
         })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+        })
         .then(data => {
             if (data.status === 'success') {
                 allButtons.forEach(btn => {
@@ -239,13 +241,15 @@
                     btn.textContent = 'Vote';
                     btn.classList.remove('voted-button');
                 });
-                pendingButton.textContent = '✔ Voted';
-                pendingButton.classList.add('voted-button');
+                chosenButton.textContent = '✔ Voted';
+                chosenButton.classList.add('voted-button');
+                statusMsg.style.color = '#28a745';
                 statusMsg.textContent = `✅ Successfully voted for ${chosenParty}. Thank you!`;
 
             } else if (data.status === 'already_voted') {
                 banner.style.display = 'block';
                 allButtons.forEach(btn => btn.disabled = true);
+                statusMsg.style.color = '#856404';
                 statusMsg.textContent = '⚠️ You have already voted.';
 
             } else if (data.status === 'not_logged_in') {
@@ -253,15 +257,12 @@
                 window.location.href = '/login';
             }
         })
-        .catch(() => {
+        .catch(err => {
             statusMsg.style.color = '#dc3545';
-            statusMsg.textContent = 'Something went wrong. Please try again.';
+            statusMsg.textContent = 'Something went wrong: ' + err.message;
         });
-
-        pendingButton = null;
     });
 
-    // Close modal on outside click
     overlay.addEventListener('click', e => {
         if (e.target === overlay) {
             overlay.classList.remove('show');

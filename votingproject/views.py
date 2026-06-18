@@ -49,7 +49,11 @@ def voting(request):
         return redirect("login")
     user = signup.objects.filter(username=username).first()
     already_voted = user.voted if user else False
-    return render(request, "voting.html", {"already_voted": already_voted})
+    voted_party = user.voted_party if user else ""
+    return render(request, "voting.html", {
+        "already_voted": already_voted,
+        "voted_party": voted_party,
+    })
 
 
 @require_POST
@@ -64,7 +68,7 @@ def castvote(request):
 
     # SERVER-SIDE guard — blocks vote even if someone bypasses the frontend
     if user.voted:
-        return JsonResponse({"status": "already_voted"})
+        return JsonResponse({"status": "already_voted", "party": user.voted_party})
 
     try:
         data = json.loads(request.body)
@@ -75,16 +79,17 @@ def castvote(request):
     if not party:
         return JsonResponse({"status": "no_party_selected"}, status=400)
 
-    # Save which party was voted for
+    # Save vote record in Vote table
     candidate = Candidate.objects.filter(party=party).first()
     if candidate:
         Vote.objects.create(voter=user, candidate=candidate)
 
-    # Mark user as voted in DB — persists across refreshes and sessions
+    # Mark user as voted AND record which party — prevents double voting
     user.voted = True
+    user.voted_party = party  # ← THIS WAS THE MISSING LINE
     user.save()
 
-    return JsonResponse({"status": "success"})
+    return JsonResponse({"status": "success", "party": party})
 
 
 def checkaminlogin(request):

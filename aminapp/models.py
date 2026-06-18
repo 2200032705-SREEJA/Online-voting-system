@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class createregister(models.Model):
     fullname = models.CharField(max_length=100, blank=False)
     adharnumber = models.CharField(max_length=14, blank=False)
@@ -19,7 +20,7 @@ class signup(models.Model):
     aadhar = models.CharField(max_length=12, blank=True, default="")
     dob = models.DateField(null=True, blank=True)
     voted = models.BooleanField(default=False)
-    voted_party = models.CharField(max_length=100, blank=True, default="")  # NEW
+    voted_party = models.CharField(max_length=100, blank=True, default="")
 
     class Meta:
         db_table = "signup_table"
@@ -52,7 +53,7 @@ class Candidate(models.Model):
 
 
 class Vote(models.Model):
-    voter = models.ForeignKey(signup, on_delete=models.CASCADE)
+    voter = models.OneToOneField(signup, on_delete=models.CASCADE)  # ← OneToOne ensures one vote per user at DB level
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     voted_at = models.DateTimeField(auto_now_add=True)
 
