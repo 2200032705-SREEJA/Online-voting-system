@@ -2,7 +2,7 @@
 "version": 2,
 "builds": [
 {
-"src": "manage.py",
+"src": "votingproject/wsgi.py",
 "use": "@vercel/python"
 }
 ],
