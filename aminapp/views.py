@@ -14,10 +14,17 @@ def aminhome(request):
         .order_by('-total_votes')
     )
 
+    voters = signup.objects.all().order_by('username')   # ← NEW LINE
+
+    # Prediction: party with most votes
+    predicted_winner = party_votes.first() if party_votes else None   # ← NEW LINE
+
     context = {
         'total_registered': total_registered,
         'total_voted':      total_voted,
         'total_not_voted':  total_not_voted,
         'party_votes':      party_votes,
+        'voters':           voters,            # ← NEW
+        'predicted_winner': predicted_winner,  # ← NEW
     }
     return render(request, "aminhome.html", context)

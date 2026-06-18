@@ -5,7 +5,8 @@ from . import views
 urlpatterns = [
     path('amin/', admin.site.urls),
     path("demo", views.demofunctio, name="demo"),
-    path("", views.login, name="root"),
+    path("", views.welcome, name="root"),          # ← CHANGED: was views.login
+    path("welcome", views.welcome, name="welcome"), # ← NEW
     path("home", views.homefunction, name="home"),
     path("voterregistration", views.voterregistratiofunction, name="voterregistration"),
     path('createregister/', views.createregister, name='crateregister'),

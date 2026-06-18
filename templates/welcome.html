@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Voting System | India</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,800;1,600&family=Poppins:wght@400;500;600;700&display=swap');
+
+    :root {
+      --ink: #0B1220;
+      --ink2: #121A2E;
+      --saffron: #FF9933;
+      --white: #FFFFFF;
+      --green: #138808;
+      --navy: #000080;
+      --gold: #E3B23C;
+      --red: #C8102E;
+      --paper: #F7F6F2;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; font-family: 'Poppins', sans-serif; }
+
+    /* ── HERO / BACKGROUND ── */
+    .hero {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(255,153,51,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 30%, rgba(19,136,8,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(0,0,128,0.2) 0%, transparent 55%),
+        linear-gradient(160deg, #0B1220 0%, #0d1829 40%, #121A2E 100%);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* dot grid overlay */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    /* Tricolor accent bar at top */
+    .tricolor-bar {
+      height: 5px;
+      background: linear-gradient(90deg, #FF9933 33.3%, #FFFFFF 33.3% 66.6%, #138808 66.6%);
+      flex-shrink: 0;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      height: 70px;
+      position: relative;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .nav-logo .emblem {
+      width: 40px;
+      height: 40px;
+    }
+    .nav-logo-text {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .nav-logo-text span { color: var(--saffron); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.2s;
+      letter-spacing: 0.03em;
+    }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .nav-links .btn-admin {
+      background: rgba(255,153,51,0.15);
+      color: var(--saffron);
+      border: 1px solid rgba(255,153,51,0.35);
+    }
+    .nav-links .btn-admin:hover { background: rgba(255,153,51,0.25); }
+
+    /* ── MAIN CONTENT ── */
+    .content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 60px;
+      position: relative;
+      z-index: 2;
+      gap: 80px;
+    }
+
+    /* LEFT: text + buttons */
+    .left {
+      max-width: 520px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,153,51,0.12);
+      border: 1px solid rgba(255,153,51,0.3);
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--saffron);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .eyebrow .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--saffron);
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    .headline {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(38px, 5vw, 64px);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+    .headline em {
+      font-style: italic;
+      color: var(--saffron);
+    }
+    .headline .line-green { color: #4ADE80; }
+
+    .subtext {
+      font-size: 15px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.7;
+      margin-bottom: 44px;
+      max-width: 420px;
+    }
+
+    /* CTA buttons */
+    .cta-group {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: all 0.25s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--saffron);
+      color: #0B1220;
+      box-shadow: 0 4px 20px rgba(255,153,51,0.4);
+    }
+    .btn-primary:hover {
+      background: #ffac47;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(255,153,51,0.5);
+    }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.25);
+    }
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.06);
+    }
+    .btn-ghost {
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.75);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+
+    /* feature pills */
+    .features {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .feature-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+    }
+    .feature-pill i { color: #4ADE80; font-size: 11px; }
+
+    /* RIGHT: visual card stack */
+    .right {
+      flex-shrink: 0;
+      position: relative;
+      width: 340px;
+    }
+
+    /* Ashoka Chakra SVG */
+    .chakra-wrap {
+      position: absolute;
+      top: -60px;
+      right: -40px;
+      width: 280px;
+      opacity: 0.08;
+      animation: spinChakra 30s linear infinite;
+    }
+    @keyframes spinChakra { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .chakra-wrap { animation: none; } }
+
+    /* Card */
+    .card-main {
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 32px;
+      position: relative;
+      z-index: 2;
+    }
+    .card-main .card-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--saffron);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .stat-box {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-box .val {
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-box .lbl {
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .stat-box.saffron .val { color: var(--saffron); }
+    .stat-box.green-v .val { color: #4ADE80; }
+
+    .vote-bar-section { margin-bottom: 20px; }
+    .vote-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 6px;
+    }
+    .vote-bar-bg {
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .vote-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--saffron), #ffcc80);
+      width: 0%;
+      animation: fillBar 2s 0.8s ease-out forwards;
+    }
+    @keyframes fillBar { to { width: 72%; } }
+
+    .card-footer-note {
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* Floating badge */
+    .badge-float {
+      position: absolute;
+      bottom: -18px;
+      left: -18px;
+      background: #138808;
+      color: #fff;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      z-index: 3;
+    }
+    .badge-float i { font-size: 14px; }
+
+    /* ── BOTTOM NAV CARDS ── */
+    .bottom-cards {
+      padding: 0 60px 50px;
+      position: relative;
+      z-index: 2;
+    }
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .nav-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px;
+      padding: 22px 20px;
+      text-decoration: none;
+      transition: all 0.25s;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .nav-card:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-3px);
+    }
+    .nav-card .nc-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .nc-icon.orange { background: rgba(255,153,51,0.15); color: var(--saffron); }
+    .nc-icon.green  { background: rgba(19,136,8,0.15);  color: #4ADE80; }
+    .nc-icon.blue   { background: rgba(78,140,255,0.15); color: #7eb3ff; }
+    .nc-icon.red    { background: rgba(200,16,46,0.15);  color: #ff6b84; }
+    .nav-card .nc-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .nav-card .nc-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.5;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .content { flex-direction: column; padding: 30px 24px; gap: 40px; }
+      .right { width: 100%; max-width: 340px; }
+      .chakra-wrap { display: none; }
+      .bottom-cards { padding: 0 24px 40px; }
+      .bottom-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .bottom-grid { grid-template-columns: 1fr; }
+      .cta-group { flex-direction: column; }
+      .btn { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+<div class="hero">
+
+  <!-- Tricolor stripe -->
+  <div class="tricolor-bar"></div>
+
+  <!-- Navbar -->
+  <nav>
+    <a href="{% url 'root' %}" class="nav-logo">
+      <!-- Mini Ashoka Chakra SVG as logo -->
+      <svg class="emblem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="18" fill="none" stroke="#FF9933" stroke-width="2"/>
+        <circle cx="20" cy="20" r="6" fill="none" stroke="#000080" stroke-width="2"/>
+        <!-- 12 spokes -->
+        <g stroke="#000080" stroke-width="1.2">
+          <line x1="20" y1="14" x2="20" y2="3"/>
+          <line x1="20" y1="26" x2="20" y2="37"/>
+          <line x1="14" y1="20" x2="3" y2="20"/>
+          <line x1="26" y1="20" x2="37" y2="20"/>
+          <line x1="15.5" y1="15.5" x2="7.6" y2="7.6"/>
+          <line x1="24.5" y1="24.5" x2="32.4" y2="32.4"/>
+          <line x1="24.5" y1="15.5" x2="32.4" y2="7.6"/>
+          <line x1="15.5" y1="24.5" x2="7.6" y2="32.4"/>
+          <line x1="13" y1="17" x2="4.5" y2="12.5"/>
+          <line x1="27" y1="23" x2="35.5" y2="27.5"/>
+          <line x1="23" y1="13" x2="27.5" y2="4.5"/>
+          <line x1="17" y1="27" x2="12.5" y2="35.5"/>
+        </g>
+      </svg>
+      <span class="nav-logo-text">Vote<span>Bharat</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{% url 'login' %}">Login</a></li>
+      <li><a href="{% url 'signup' %}">Register</a></li>
+      <li><a href="{% url 'candidateinformation' %}">Candidates</a></li>
+      <li><a href="{% url 'aminhome' %}" class="btn-admin"><i class="fas fa-shield-alt"></i> Admin</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="left">
+      <div class="eyebrow">
+        <span class="dot"></span>
+        India's Digital Democracy
+      </div>
+      <h1 class="headline">
+        Your Vote.<br>
+        Your <em>Voice.</em><br>
+        <span class="line-green">Your Future.</span>
+      </h1>
+      <p class="subtext">
+        Participate in India's secure online election system. Register as a voter, choose your candidate, and watch democracy unfold — transparently and instantly.
+      </p>
+      <div class="cta-group">
+        <a href="{% url 'login' %}" class="btn btn-primary">
+          <i class="fas fa-vote-yea"></i> Login & Vote
+        </a>
+        <a href="{% url 'signup' %}" class="btn btn-outline">
+          <i class="fas fa-user-plus"></i> New Registration
+        </a>
+        <a href="{% url 'candidateinformation' %}" class="btn btn-ghost">
+          <i class="fas fa-info-circle"></i> Learn More
+        </a>
+      </div>
+      <div class="features">
+        <span class="feature-pill"><i class="fas fa-check-circle"></i> Secure & Encrypted</span>
+        <span class="feature-pill"><i class="fas fa-check-circle"></i> One Vote Per Voter</span>
+        <span class="feature-pill"><i class="fas fa-check-circle"></i> Live Results</span>
+        <span class="feature-pill"><i class="fas fa-check-circle"></i> Aadhar Verified</span>
+      </div>
+    </div>
+
+    <div class="right">
+      <!-- Spinning Ashoka Chakra background -->
+      <svg class="chakra-wrap" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="95" fill="none" stroke="white" stroke-width="4"/>
+        <circle cx="100" cy="100" r="28" fill="none" stroke="white" stroke-width="4"/>
+        <g stroke="white" stroke-width="2">
+          <line x1="100" y1="72" x2="100" y2="6"/><line x1="100" y1="128" x2="100" y2="194"/>
+          <line x1="72" y1="100" x2="6" y2="100"/><line x1="128" y1="100" x2="194" y2="100"/>
+          <line x1="80" y1="80" x2="34" y2="34"/><line x1="120" y1="120" x2="166" y2="166"/>
+          <line x1="120" y1="80" x2="166" y2="34"/><line x1="80" y1="120" x2="34" y2="166"/>
+          <line x1="73" y1="87" x2="20" y2="57"/><line x1="127" y1="113" x2="180" y2="143"/>
+          <line x1="113" y1="73" x2="143" y2="20"/><line x1="87" y1="127" x2="57" y2="180"/>
+          <line x1="87" y1="73" x2="57" y2="20"/><line x1="113" y1="127" x2="143" y2="180"/>
+          <line x1="73" y1="113" x2="20" y2="143"/><line x1="127" y1="87" x2="180" y2="57"/>
+          <line x1="76.5" y1="78" x2="43" y2="24"/><line x1="123.5" y1="122" x2="157" y2="176"/>
+          <line x1="122" y1="76.5" x2="176" y2="43"/><line x1="78" y1="123.5" x2="24" y2="157"/>
+          <line x1="78" y1="76.5" x2="24" y2="43"/><line x1="122" y1="123.5" x2="176" y2="157"/>
+          <line x1="76.5" y1="122" x2="43" y2="176"/><line x1="123.5" y1="78" x2="157" y2="24"/>
+        </g>
+      </svg>
+
+      <!-- Info Card -->
+      <div class="card-main">
+        <div class="card-label">🗳️ Election Overview</div>
+        <div class="stat-row">
+          <div class="stat-box saffron">
+            <div class="val">18+</div>
+            <div class="lbl">Age Eligible</div>
+          </div>
+          <div class="stat-box green-v">
+            <div class="val">100%</div>
+            <div class="lbl">Secure</div>
+          </div>
+        </div>
+        <div class="vote-bar-section">
+          <div class="vote-bar-label">
+            <span>Voter Participation</span>
+            <span>72%</span>
+          </div>
+          <div class="vote-bar-bg">
+            <div class="vote-bar-fill"></div>
+          </div>
+        </div>
+        <div class="vote-bar-section">
+          <div class="vote-bar-label">
+            <span>Votes Counted</span>
+            <span>Live</span>
+          </div>
+          <div class="vote-bar-bg">
+            <div class="vote-bar-fill" style="background: linear-gradient(90deg, #4ADE80, #86efac); animation-delay: 1.2s;"></div>
+          </div>
+        </div>
+        <div class="card-footer-note">
+          <i class="fas fa-lock"></i> All votes are encrypted end-to-end
+        </div>
+      </div>
+
+      <!-- Floating verified badge -->
+      <div class="badge-float">
+        <i class="fas fa-check-circle"></i> Aadhaar Verified System
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom nav cards -->
+  <div class="bottom-cards">
+    <div class="bottom-grid">
+      <a href="{% url 'login' %}" class="nav-card">
+        <div class="nc-icon orange"><i class="fas fa-sign-in-alt"></i></div>
+        <div class="nc-title">Login</div>
+        <div class="nc-desc">Already registered? Sign in and cast your vote securely.</div>
+      </a>
+      <a href="{% url 'signup' %}" class="nav-card">
+        <div class="nc-icon green"><i class="fas fa-user-plus"></i></div>
+        <div class="nc-title">New Registration</div>
+        <div class="nc-desc">First time voter? Create your account with Aadhaar verification.</div>
+      </a>
+      <a href="{% url 'candidateinformation' %}" class="nav-card">
+        <div class="nc-icon blue"><i class="fas fa-users"></i></div>
+        <div class="nc-title">Learn About Voting</div>
+        <div class="nc-desc">View all candidates, parties and make an informed choice.</div>
+      </a>
+      <a href="{% url 'aminhome' %}" class="nav-card">
+        <div class="nc-icon red"><i class="fas fa-shield-alt"></i></div>
+        <div class="nc-title">Admin Panel</div>
+        <div class="nc-desc">Monitor registered voters, live vote counts and predictions.</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

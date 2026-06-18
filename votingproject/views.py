@@ -19,6 +19,10 @@ def demofunctio(request):
     return render(request, "main.html")
 
 
+def welcome(request):          # ← ADD THIS ENTIRE FUNCTION
+    return render(request, "welcome.html")
+
+
 def homefunction(request):
     return render(request, "index.html")
 
