@@ -1,72 +1,455 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="UTF-8">
-    <title>|-Sign Up-|</title>
-    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23121A2E'/><path d='M20 60 L80 60 L72 88 L28 88 Z' fill='%23C8102E'/></svg>">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
-*{ margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins',sans-serif; }
-html, body{ display: grid; min-height: 100vh; width: 100%; place-items: center; background: linear-gradient(to right, #00f2ff 0%, #f2ff00 100%); padding: 30px 0; }
-::selection{ background: #FF0B12; }
-.container{ background: #fff; max-width: 380px; width: 100%; padding: 30px 32px; border-radius: 5px; box-shadow: 0 10px 10px rgba(0, 0, 0, 0.15); }
-.container form .title{ font-size: 28px; font-weight: 600; margin: 6px 0 10px 0; position: relative; }
-.container form .title:before{ content: ''; position: absolute; height: 4px; width: 33px; left: 0px; bottom: 3px; border-radius: 5px; background: #FF0B12; }
-.error-msg{ color:#d6002b; font-size:13px; margin-bottom:6px; }
-.container form .input-box{ width: 100%; height: 45px; margin-top: 20px; position: relative; }
-.container form .input-box input{ width: 100%; height: 100%; outline: none; font-size: 15px; border: none; }
-.container form .underline::before{ content: ''; position: absolute; height: 2px; width: 100%; background: #ccc; left: 0; bottom: 0; }
-.container form .underline::after{ content: ''; position: absolute; height: 2px; width: 100%; background: #FF0B12; left: 0; bottom: 0; transform: scaleX(0); transform-origin: left; transition: all 0.3s ease; }
-.container form .input-box input:focus ~ .underline::after, .container form .input-box input:valid ~ .underline::after{ transform: scaleX(1); transform-origin: left; }
-.field-hint{ font-size:11px; color:#888; margin-top:4px; }
-.container form .button{ margin: 36px 0 18px 0; }
-.container .input-box input[type="submit"]{ background: #FF0B12; font-size: 16px; color: #fff; border-radius: 5px; cursor: pointer; transition: all 0.3s ease; }
-.container .input-box input[type="submit"]:hover{ letter-spacing: 1px; background: #A20F13; }
-.container .option{ font-size: 14px; text-align: center; }
-    </style>
-    <div class="container">
-      <form action="{% url 'createuser' %}" method="post">
-        {% csrf_token %}
-        {% if msg1 %}<p class="error-msg">{{ msg1 }}</p>{% endif %}
-        <div class="title">Voter Sign Up</div>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Voter Sign Up</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
 
-        <div class="input-box underline">
-          <input type="text" name="uid" placeholder="User Id" required>
-          <div class="underline"></div>
-        </div>
-        <div class="input-box">
-          <input type="password" name="password" placeholder="Enter your Password" minlength="10" maxlength="100" required>
-          <div class="underline"></div>
-        </div>
-        <div class="input-box">
-          <input type="email" name="email" placeholder="Enter your Email" required>
-          <div class="underline"></div>
-        </div>
-        <div class="input-box">
-          <input type="tel" name="phone" placeholder="10-digit Phone Number" pattern="[0-9]{10}" maxlength="10" required>
-          <div class="underline"></div>
-        </div>
-        <div class="input-box">
-          <input type="text" name="aadhar" placeholder="12-digit Aadhar Number" pattern="[0-9]{12}" maxlength="12" required>
-          <div class="underline"></div>
-        </div>
-        <div class="input-box">
-          <input type="date" name="dob" required>
-          <div class="underline"></div>
-        </div>
-        <p class="field-hint">You must be 18 or older to register as a voter.</p>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-        <div class="input-box button">
-          <input type="submit" name="" value="Continue">
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    min-height:100vh;
+    background:linear-gradient(135deg,#0097A7 0%,#006064 40%,#004D40 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 16px;
+    position:relative;
+    overflow-x:hidden;
+}
+
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events:none;
+    z-index:0;
+}
+
+/* Tricolor top bar */
+.tribar{
+    position:fixed;
+    top:0;left:0;right:0;
+    display:flex;
+    height:6px;
+    z-index:100;
+}
+.tribar span{flex:1;}
+.tribar span:nth-child(1){background:#FF6B00;}
+.tribar span:nth-child(2){background:#ffffff;}
+.tribar span:nth-child(3){background:#138808;}
+
+/* Background fist decorations */
+.fists{
+    position:fixed;
+    bottom:0;left:0;right:0;
+    display:flex;
+    justify-content:space-around;
+    align-items:flex-end;
+    pointer-events:none;
+    opacity:0.1;
+    padding:0 20px;
+    z-index:0;
+}
+.fist{
+    width:32px;
+    height:64px;
+    border-radius:8px 8px 4px 4px;
+    border:2px solid #fff;
+}
+.fist.saf{background:#FF6B00;}
+.fist.wht{background:#f5f5f5;}
+.fist.grn{background:#138808;}
+
+/* Card */
+.card{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:480px;
+    background:#ffffff;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 24px 60px rgba(0,0,0,0.35);
+    margin-top:6px;
+}
+
+/* Hero header */
+.hero{
+    background:linear-gradient(135deg,#00838F,#004D40);
+    padding:24px 28px 22px;
+    color:#fff;
+    position:relative;
+}
+.hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:rgba(255,255,255,0.15);
+    border-radius:20px;
+    padding:4px 12px;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.5px;
+    color:#fff;
+    text-transform:uppercase;
+    margin-bottom:10px;
+}
+.hero-badge .dot{
+    width:8px;height:8px;
+    border-radius:50%;
+    background:#FF6B00;
+}
+.hero h1{
+    font-size:26px;
+    font-weight:700;
+    line-height:1.2;
+    margin-bottom:4px;
+}
+.hero p{
+    font-size:13px;
+    opacity:0.8;
+    margin:0;
+}
+.hero-flag{
+    position:absolute;
+    right:24px;
+    top:50%;
+    transform:translateY(-50%);
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+    align-items:center;
+}
+.flag-stripe{
+    width:38px;
+    height:10px;
+    border-radius:2px;
+}
+.flag-stripe.s{background:#FF6B00;}
+.flag-stripe.w{
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:10px;
+    color:#003087;
+}
+.flag-stripe.g{background:#138808;}
+
+/* Form body */
+.form-body{
+    padding:24px 28px 30px;
+}
+
+/* Messages */
+.error-msg{
+    background:#FFF3E0;
+    border-left:3px solid #FF6B00;
+    border-radius:0 8px 8px 0;
+    padding:10px 14px;
+    font-size:13px;
+    color:#E65100;
+    margin-bottom:16px;
+}
+.success-msg{
+    background:#E8F5E9;
+    border-left:3px solid #138808;
+    border-radius:0 8px 8px 0;
+    padding:10px 14px;
+    font-size:13px;
+    color:#1B5E20;
+    margin-bottom:16px;
+}
+
+/* Field rows */
+.field-row{
+    margin-bottom:15px;
+}
+.field-label{
+    font-size:11px;
+    font-weight:600;
+    color:#006064;
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+    margin-bottom:5px;
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+.field-label i{
+    font-size:14px;
+    color:#FF6B00;
+}
+.field-input{
+    width:100%;
+    padding:11px 14px;
+    border:1.5px solid #e0e0e0;
+    border-radius:10px;
+    outline:none;
+    font-family:'Poppins',sans-serif;
+    font-size:14px;
+    color:#1a1a1a;
+    background:#fafafa;
+    transition:all 0.2s;
+}
+.field-input:focus{
+    border-color:#00838F;
+    background:#fff;
+    box-shadow:0 0 0 3px rgba(0,131,143,0.12);
+}
+.field-hint{
+    font-size:11px;
+    color:#888;
+    margin-top:5px;
+    line-height:1.65;
+}
+.field-hint b{
+    color:#006064;
+}
+
+/* Two-column grid */
+.two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-bottom:15px;
+}
+
+/* Age note */
+.age-note{
+    background:linear-gradient(135deg,#E8F5E9,#E0F2F1);
+    border-left:3px solid #138808;
+    border-radius:0 8px 8px 0;
+    padding:8px 12px;
+    font-size:11px;
+    color:#2E7D32;
+    margin-top:6px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+.age-note i{font-size:14px;}
+
+/* Submit button */
+.submit-btn{
+    width:100%;
+    padding:14px;
+    background:linear-gradient(135deg,#FF6B00,#e65c00);
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    font-family:'Poppins',sans-serif;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin-top:8px;
+    transition:opacity 0.2s, transform 0.15s;
+}
+.submit-btn:hover{
+    opacity:0.92;
+    transform:translateY(-1px);
+}
+.submit-btn:active{
+    transform:translateY(0);
+}
+.submit-btn i{font-size:18px;}
+
+/* Login link */
+.login-link{
+    text-align:center;
+    margin-top:15px;
+    font-size:13px;
+    color:#888;
+}
+.login-link a{
+    color:#006064;
+    font-weight:600;
+    text-decoration:none;
+}
+.login-link a:hover{
+    text-decoration:underline;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Tricolor top bar -->
+<div class="tribar">
+    <span></span><span></span><span></span>
+</div>
+
+<!-- Background fist decorations -->
+<div class="fists">
+    <div class="fist saf"></div>
+    <div class="fist wht"></div>
+    <div class="fist grn"></div>
+    <div class="fist saf"></div>
+    <div class="fist wht"></div>
+    <div class="fist grn"></div>
+    <div class="fist saf"></div>
+    <div class="fist wht"></div>
+    <div class="fist grn"></div>
+</div>
+
+<!-- Main card -->
+<div class="card">
+
+    <!-- Hero header -->
+    <div class="hero">
+        <div class="hero-badge">
+            <span class="dot"></span> Online Election System
         </div>
-        <center>
-          <h6><p class="text--center">Already a member? <a href="{% url 'login' %}">Login</a></p></h6>
-        </center>
-      </form>
+        <h1>Voter Sign Up</h1>
+        <p>Register to cast your vote. Your vote matters.</p>
+        <div class="hero-flag">
+            <div class="flag-stripe s"></div>
+            <div class="flag-stripe w">☸</div>
+            <div class="flag-stripe g"></div>
+        </div>
     </div>
-  </body>
+
+    <!-- Form -->
+    <div class="form-body">
+
+        <form action="{% url 'createuser' %}" method="post">
+        {% csrf_token %}
+
+        <!-- Error / Success messages -->
+        {% if msg1 %}
+        <div class="error-msg">{{ msg1 }}</div>
+        {% endif %}
+
+        {% if msg %}
+        <div class="success-msg">{{ msg }}</div>
+        {% endif %}
+
+        <!-- User ID -->
+        <div class="field-row">
+            <div class="field-label">
+                <i class="ti ti-user" aria-hidden="true"></i> User ID
+            </div>
+            <input
+                class="field-input"
+                type="text"
+                name="uid"
+                value="{{ uid|default:'' }}"
+                placeholder="e.g. Sreeja123"
+                required>
+            <div class="field-hint">
+                Start with a letter &nbsp;·&nbsp; at least 1 <b>Capital letter</b> &nbsp;·&nbsp; numbers allowed
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="field-row">
+            <div class="field-label">
+                <i class="ti ti-lock" aria-hidden="true"></i> Password
+            </div>
+            <input
+                class="field-input"
+                type="password"
+                name="password"
+                placeholder="Create a strong password"
+                required>
+            <div class="field-hint">
+                1 <b>Capital letter</b> &nbsp;·&nbsp; 2 <b>Numbers</b> &nbsp;·&nbsp; 1 <b>Special character</b> (@#$%^&amp;*!?)
+            </div>
+        </div>
+
+        <!-- Email -->
+        <div class="field-row">
+            <div class="field-label">
+                <i class="ti ti-mail" aria-hidden="true"></i> Email Address
+            </div>
+            <input
+                class="field-input"
+                type="email"
+                name="email"
+                value="{{ email|default:'' }}"
+                placeholder="yourname@example.com"
+                required>
+        </div>
+
+        <!-- Phone + Aadhar side by side -->
+        <div class="two-col">
+            <div>
+                <div class="field-label">
+                    <i class="ti ti-phone" aria-hidden="true"></i> Phone
+                </div>
+                <input
+                    class="field-input"
+                    type="tel"
+                    name="phone"
+                    value="{{ phone|default:'' }}"
+                    placeholder="10-digit number"
+                    pattern="[0-9]{10}"
+                    maxlength="10"
+                    required>
+            </div>
+            <div>
+                <div class="field-label">
+                    <i class="ti ti-id" aria-hidden="true"></i> Aadhar
+                </div>
+                <input
+                    class="field-input"
+                    type="text"
+                    name="aadhar"
+                    value="{{ aadhar|default:'' }}"
+                    placeholder="12-digit number"
+                    pattern="[0-9]{12}"
+                    maxlength="12"
+                    required>
+            </div>
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="field-row">
+            <div class="field-label">
+                <i class="ti ti-calendar" aria-hidden="true"></i> Date of Birth
+            </div>
+            <input
+                class="field-input"
+                type="date"
+                name="dob"
+                value="{{ dob|default:'' }}"
+                required>
+            <div class="age-note">
+                <i class="ti ti-info-circle" aria-hidden="true"></i>
+                You must be 18 years or older to register as a voter.
+            </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="submit-btn">
+            <i class="ti ti-check" aria-hidden="true"></i>
+            Continue Registration
+        </button>
+
+        <div class="login-link">
+            Already registered? <a href="{% url 'login' %}">Login here</a>
+        </div>
+
+        </form>
+
+    </div><!-- /form-body -->
+</div><!-- /card -->
+
+</body>
 </html>

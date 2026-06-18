@@ -129,6 +129,23 @@
             color: #fff; font-size: 14px; font-weight: 600; cursor: pointer;
         }
         .btn-confirm:hover { background: #0056b3; }
+        .home-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:12px 28px;
+    background:#007bff;
+    color:white;
+    text-decoration:none;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.home-btn:hover{
+    background:#0056b3;
+    
+}
     </style>
 </head>
 <body>
@@ -177,8 +194,30 @@
             <button class="vote-button" data-party="NOTA">Vote</button>
         </div>
     </div>
+<div id="status-message"></div>
 
-    <div id="status-message"></div>
+<div id="home-container" style="display:none; text-align:center; margin-top:20px;">
+    <a href="/home" class="home-btn">
+        🏠 Home
+    </a>
+</div>
+
+<div id="home-container" style="display:none; text-align:center; margin-top:20px;">
+    <a href="/checkaminlogin" class="home-btn">
+        🏠 Back to Home
+    </a>
+</div>
+
+<div id="home-container" style="display:none; text-align:center; margin-top:20px;">
+    <a href="/checkaminlogin" class="home-btn">
+        🏠 Back to Home
+    </a>
+</div>
+<div id="home-container" style="display:none; text-align:center; margin-top:20px;">
+    <a href="/checkaminlogin" class="home-btn">
+    🏠 Home
+    </a>
+</div>
 
 <script>
     const alreadyVoted = "{{ already_voted }}" === "True";
@@ -194,11 +233,12 @@
     let pendingButton = null;
 
     if (alreadyVoted) {
-        banner.style.display = 'block';
-        allButtons.forEach(btn => btn.disabled = true);
-        statusMsg.style.color = '#856404';
-        statusMsg.textContent = 'You have already voted for {{ voted_party }}. Thank you!';
-    }
+    banner.style.display = 'block';
+    allButtons.forEach(btn => btn.disabled = true);
+    statusMsg.style.color = '#856404';
+    statusMsg.textContent = 'You have already voted for {{ voted_party }}. Thank you!';
+    document.getElementById('home-container').style.display = 'block';
+}
 
     allButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -245,6 +285,9 @@
                 chosenButton.classList.add('voted-button');
                 statusMsg.style.color = '#28a745';
                 statusMsg.textContent = `✅ Successfully voted for ${chosenParty}. Thank you!`;
+                document.getElementById('home-container').style.display = 'block';
+                document.getElementById('home-container').style.display = 'block';
+                document.getElementById('home-container').style.display = 'block';
 
             } else if (data.status === 'already_voted') {
                 banner.style.display = 'block';

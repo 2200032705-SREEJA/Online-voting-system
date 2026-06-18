@@ -20,6 +20,10 @@ urlpatterns = [
     path("castvote", views.castvote, name="castvote"),
     path("signup", views.singup, name="signup"),
     path('createuser/', views.createuser, name='createuser'),
+    path("adminlogin", views.adminlogin, name="adminlogin"),
+    path("adminauthenticate", views.adminauthenticate, name="adminauthenticate"),
     path("logout", views.logout_view, name="logout"),
+    path("forgotpassword", views.forgotpassword, name="forgotpassword"),
+    path("resetpassword", views.resetpassword, name="resetpassword"),
     path("", include("aminapp.urls")),
 ]

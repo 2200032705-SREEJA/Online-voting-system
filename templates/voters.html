@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voter Details</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f4f6f9;
+            padding:20px;
+        }
+
+        .navbar-links{
+            margin-bottom:20px;
+        }
+
+        .navbar-links a{
+            text-decoration:none;
+            padding:10px 15px;
+            background:#007bff;
+            color:white;
+            border-radius:5px;
+            margin-right:10px;
+        }
+
+        h1{
+            margin-bottom:20px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+        }
+
+        th{
+            background:#1a1a2e;
+            color:white;
+            padding:12px;
+        }
+
+        td{
+            padding:12px;
+            border-bottom:1px solid #ddd;
+        }
+
+        tr:hover{
+            background:#f5f5f5;
+        }
+
+        .voted{
+            color:green;
+            font-weight:bold;
+        }
+
+        .not-voted{
+            color:red;
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar-links">
+    <a href="/aminhome">📊 Dashboard</a>
+    <a href="/partyvotes">🗳 Votes By Party</a>
+    <a href="/voters">👥 Voter Details</a>
+    <a href="/logout">🚪 Logout</a>
+</div>
+
+<h1>👤 Registered Voters</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Username</th>
+            <th>Phone</th>
+            <th>Age</th>
+            <th>Password</th>
+            <th>Status</th>
+            <th>Voted For</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for voter in voters %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ voter.username }}</td>
+            <td>{{ voter.phone }}</td>
+            <td>{{ voter.age }}</td>
+            <td>{{ voter.password }}</td>
+
+            <td>
+                {% if voter.voted %}
+                    <span class="voted">✔ Voted</span>
+                {% else %}
+                    <span class="not-voted">✘ Not Voted</span>
+                {% endif %}
+            </td>
+
+            <td>
+                {% if voter.voted_party %}
+                    {{ voter.voted_party }}
+                {% else %}
+                    —
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

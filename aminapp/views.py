@@ -1,30 +1,73 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.db.models import Count
-from aminapp.models import signup, Vote
+from aminapp.models import signup, Vote, Candidate
+import datetime
 
-def aminhome(request):
-    total_registered = signup.objects.count()
-    total_voted      = signup.objects.filter(voted=True).count()
-    total_not_voted  = total_registered - total_voted
 
-    party_votes = (
-        Vote.objects
-        .values('candidate__party')
-        .annotate(total_votes=Count('id'))
-        .order_by('-total_votes')
+def calculate_age(dob):
+    if not dob:
+        return "-"
+
+    today = datetime.date.today()
+
+    return today.year - dob.year - (
+        (today.month, today.day) < (dob.month, dob.day)
     )
 
-    voters = signup.objects.all().order_by('username')   # ← NEW LINE
 
-    # Prediction: party with most votes
-    predicted_winner = party_votes.first() if party_votes else None   # ← NEW LINE
+# ==========================
+# ADMIN HOME DASHBOARD
+# ==========================
+def aminhome(request):
 
-    context = {
-        'total_registered': total_registered,
-        'total_voted':      total_voted,
-        'total_not_voted':  total_not_voted,
-        'party_votes':      party_votes,
-        'voters':           voters,            # ← NEW
-        'predicted_winner': predicted_winner,  # ← NEW
-    }
-    return render(request, "aminhome.html", context)
+    if not request.session.get("admin_logged_in"):
+        return redirect("adminlogin")
+
+    total_registered = signup.objects.count()
+    total_voted = signup.objects.filter(voted=True).count()
+    total_not_voted = total_registered - total_voted
+
+    return render(request, "aminhome.html", {
+        "total_registered": total_registered,
+        "total_voted": total_voted,
+        "total_not_voted": total_not_voted,
+    })
+
+
+# ==========================
+# PARTY VOTES PAGE
+# ==========================
+def partyvotes(request):
+
+    if not request.session.get("admin_logged_in"):
+        return redirect("adminlogin")
+
+    party_votes = Candidate.objects.annotate(
+        total_votes=Count('vote')
+    ).order_by('-total_votes')
+
+    total_voted = Vote.objects.count()
+
+    return render(request, "partyvotes.html", {
+        "party_votes": party_votes,
+        "total_voted": total_voted,
+    })
+
+
+# ==========================
+# VOTERS PAGE
+# ==========================
+def voters(request):
+
+    if not request.session.get("admin_logged_in"):
+        return redirect("adminlogin")
+
+    voters = signup.objects.all().order_by('username')
+
+    for voter in voters:
+        voter.age = calculate_age(voter.dob)
+
+    return render(request, "voters.html", {
+        "voters": voters,
+        "total_registered": voters.count(),
+    })

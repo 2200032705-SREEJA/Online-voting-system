@@ -161,7 +161,9 @@
             <span class="field__label"><i class="fas fa-lock"></i>Password</span>
             <input type="password" name="pwd" placeholder="Enter your password" required>
           </label>
-          <a href="#" class="forgot">Forgot your password?</a>
+          <a href="{% url 'forgotpassword' %}" class="forgot">
+    Forgot your password?
+</a>
           <button type="submit" class="submit-btn">Log in</button>
         </form>
         <p class="signup-line">New here? <a href="{% url 'signup' %}">Register to vote</a></p>

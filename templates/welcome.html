@@ -451,7 +451,7 @@
       <li><a href="{% url 'login' %}">Login</a></li>
       <li><a href="{% url 'signup' %}">Register</a></li>
       <li><a href="{% url 'candidateinformation' %}">Candidates</a></li>
-      <li><a href="{% url 'aminhome' %}" class="btn-admin"><i class="fas fa-shield-alt"></i> Admin</a></li>
+      <li><a href="{% url 'adminlogin' %}" class="btn-admin"><i class="fas fa-shield-alt"></i> Admin</a></li>
     </ul>
   </nav>
 
@@ -571,7 +571,7 @@
         <div class="nc-title">Learn About Voting</div>
         <div class="nc-desc">View all candidates, parties and make an informed choice.</div>
       </a>
-      <a href="{% url 'aminhome' %}" class="nav-card">
+      <a href="{% url 'adminlogin' %}" class="nav-card">
         <div class="nc-icon red"><i class="fas fa-shield-alt"></i></div>
         <div class="nc-title">Admin Panel</div>
         <div class="nc-desc">Monitor registered voters, live vote counts and predictions.</div>

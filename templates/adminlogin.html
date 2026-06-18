@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login</title>
+
+    <style>
+
+        body{
+            margin:0;
+            font-family:Segoe UI;
+            background:linear-gradient(135deg,#0f172a,#1e293b);
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .card{
+            width:400px;
+            background:white;
+            padding:40px;
+            border-radius:20px;
+            box-shadow:0 20px 40px rgba(0,0,0,.3);
+        }
+
+        h2{
+            text-align:center;
+            margin-bottom:25px;
+        }
+
+        input{
+            width:100%;
+            padding:14px;
+            margin-bottom:15px;
+            border:1px solid #ddd;
+            border-radius:10px;
+        }
+
+        button{
+            width:100%;
+            padding:14px;
+            border:none;
+            background:#2563eb;
+            color:white;
+            border-radius:10px;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#1d4ed8;
+        }
+
+        .error{
+            color:red;
+            text-align:center;
+            margin-bottom:15px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>Admin Login</h2>
+
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/adminauthenticate">
+
+        {% csrf_token %}
+
+        <input
+            type="text"
+            name="username"
+            placeholder="Admin Username"
+            required
+        >
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Admin Password"
+            required
+        >
+
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
