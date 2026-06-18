@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>voting</title>
+</head>
+<body>
+    <style>
+        body{
+            background-image: url("https://media.istockphoto.com/photos/online-voting-picture-id1226993080?k=6&m=1226993080&s=170667a&w=0&h=DJj5qerctsaOMdaF5x-SMnKBVzvrGqPC4XNMYJrGPH0=");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+        p {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  text-align: center;
+  font-size: 18px;
+  color: #000000;
+}
+.frame {
+  width: 90%;
+  margin: 40px auto;
+  text-align: center;
+}
+button {
+  margin: 150px;
+}
+.custom-btn {
+  width: 130px;
+  height: 40px;
+  color: #000000;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(0, 0, 0, 0.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+}
+
+.btn-15 {
+  background: #ff9100;
+  border: none;
+  z-index: 1;
+}
+.btn-15:after {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 100%;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  background-color: #f2ff00;
+  border-radius: 5px;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  transition: all 0.3s ease;
+}
+.btn-15:hover {
+  color: #fff;
+}
+.btn-15:hover:after {
+  left: 0;
+  width: 100%;
+}
+.btn-15:active {
+  top: 2px;
+}
+
+        </style>
+    <h1 style="color: #000000;">What is an online voting system?</h1>
+    <h2 style="color: #000000;">An online voting system is a software platform that allows groups to securely conduct<br>
+         votes and elections.High-quality online voting systems balance ballot security, accessibility,<br>
+         and the overall requirements.of an organization's voting event</h2>
+    <h2 style="color: rgb(0, 0, 0);"> 
+ 
+
+ 
+        At their core, online voting systems protect the integrity of your vote by preventing <br>
+        voters from being able to vote multiple times.As a digital platform, they eliminate <br>
+        the need to gather in-person, cast votes using paper, or by any other means <br>
+        (e.g. email, insecure survey software). You may hear an online voting system <br>
+        being referred to as an online election system, an online e voting system,<br>
+        or electronic voting. These all make reference to the same thing:<br>
+        a secure voting tool that allows your group to collect input from your group <br>
+        and closely scrutinize the results in real time.Keep reading for access to <br>
+        the most comprehensive online voting system introduction you will find.<br>
+        </h2>
+        <button class="custom-btn btn-15"><a href="{% url 'login' %}"> Get Started</a></button>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picture Voting Animation</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            padding: 30px 20px;
+        }
+
+        .voting-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .picture-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 16px;
+            padding: 24px 20px;
+            width: 200px;
+            animation: slideIn 1s ease-out;
+        }
+
+        .picture {
+            width: 150px;
+            height: 150px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .name h2 { font-size: 16px; font-weight: 600; text-align: center; color: #333; }
+
+        .vote-button {
+            padding: 10px 0;
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: background-color 0.2s;
+        }
+
+        .vote-button:hover:not(:disabled) { background-color: #0056b3; }
+        .vote-button:disabled { cursor: not-allowed; opacity: 0.5; }
+        .vote-button.voted-button { background-color: #28a745; opacity: 1; font-weight: 600; }
+
+        #status-message {
+            margin-top: 30px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #28a745;
+            text-align: center;
+            min-height: 24px;
+        }
+
+        @keyframes slideIn {
+            0%   { transform: translateX(-100%); opacity: 0; }
+            100% { transform: translateX(0);     opacity: 1; }
+        }
+
+        #already-voted-banner {
+            display: none;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+            border-radius: 12px;
+            padding: 14px 24px;
+            margin-bottom: 24px;
+            font-size: 15px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        #confirm-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        #confirm-overlay.show { display: flex; }
+
+        #confirm-box {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px 28px;
+            max-width: 320px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        }
+        #confirm-box h3 { font-size: 18px; font-weight: 600; color: #222; margin-bottom: 8px; }
+        #confirm-box p  { font-size: 14px; color: #666; margin-bottom: 24px; }
+
+        .confirm-actions { display: flex; gap: 12px; justify-content: center; }
+
+        .btn-cancel {
+            padding: 10px 28px; border-radius: 10px;
+            border: 1px solid #ccc; background: #fff;
+            color: #333; font-size: 14px; cursor: pointer;
+        }
+        .btn-cancel:hover { background: #f5f5f5; }
+
+        .btn-confirm {
+            padding: 10px 28px; border-radius: 10px;
+            border: none; background: #007bff;
+            color: #fff; font-size: 14px; font-weight: 600; cursor: pointer;
+        }
+        .btn-confirm:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+
+    <div id="already-voted-banner">
+        ⚠️ You have already cast your vote. Each person can only vote once.
+    </div>
+
+    <div id="confirm-overlay">
+        <div id="confirm-box">
+            <h3>Confirm Your Vote</h3>
+            <p id="confirm-text"></p>
+            <div class="confirm-actions">
+                <button class="btn-cancel" id="btn-cancel">Cancel</button>
+                <button class="btn-confirm" id="btn-confirm">Yes, Vote</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="voting-wrapper">
+        <div class="picture-container">
+            <div class="picture" style="background-image: url('https://www.telugubulletin.com/wp-content/uploads/2019/11/160718-tdp.jpg');"></div>
+            <div class="name"><h2>TDP</h2></div>
+            <button class="vote-button" data-party="TDP">Vote</button>
+        </div>
+        <div class="picture-container">
+            <div class="picture" style="background-image: url('https://th.bing.com/th/id/R.328f33f68eadc2ee7ca0c58a1764716c?rik=%2bRJNQ1xsQpP1Iw&riu=http%3a%2f%2f2.bp.blogspot.com%2f-AZG2T7MfwzI%2fUy5604lO_VI%2fAAAAAAAAAYA%2f4DK0QoQa2yw%2fs1600%2fJana-Sena-Party-Logo-Wallpaper.jpg&ehk=ryJhFVj1HzCjV8Pc4TiTH2FWJaee1f1OOadUwIQXmNw%3d&risl=&pid=ImgRaw&r=0');"></div>
+            <div class="name"><h2>JENASENA</h2></div>
+            <button class="vote-button" data-party="JENASENA">Vote</button>
+        </div>
+        <div class="picture-container">
+            <div class="picture" style="background-image: url('https://4.bp.blogspot.com/-URiCjwBMxVc/TtzXRyJi90I/AAAAAAAADj8/MrZd0T5ewIg/s1600/bjp-flag.jpg');"></div>
+            <div class="name"><h2>BJP</h2></div>
+            <button class="vote-button" data-party="BJP">Vote</button>
+        </div>
+        <div class="picture-container">
+            <div class="picture" style="background-image: url('https://qph.fs.quoracdn.net/main-qimg-2b60b97c4135f698bd9f5a7dab9d93ec');"></div>
+            <div class="name"><h2>YSRCP</h2></div>
+            <button class="vote-button" data-party="YSRCP">Vote</button>
+        </div>
+        <div class="picture-container">
+            <div class="picture" style="background-image: url('https://www.oneindia.com/img/2016/03/nota-04-1457086162.jpg');"></div>
+            <div class="name"><h2>NOTA</h2></div>
+            <button class="vote-button" data-party="NOTA">Vote</button>
+        </div>
+    </div>
+
+    <div id="status-message"></div>
+
+<script>
+    // Django passes already_voted as true/false from the view
+    const alreadyVoted = {{ already_voted|yesno:"true,false" }};
+
+    const allButtons   = document.querySelectorAll('.vote-button');
+    const overlay      = document.getElementById('confirm-overlay');
+    const confirmText  = document.getElementById('confirm-text');
+    const btnConfirm   = document.getElementById('btn-confirm');
+    const btnCancel    = document.getElementById('btn-cancel');
+    const statusMsg    = document.getElementById('status-message');
+    const banner       = document.getElementById('already-voted-banner');
+
+    let pendingButton = null;
+
+    // On page load — if user already voted, lock everything
+    if (alreadyVoted) {
+        banner.style.display = 'block';
+        allButtons.forEach(btn => btn.disabled = true);
+        statusMsg.textContent = 'You have already voted. Thank you!';
+    }
+
+    // Open confirm modal
+    allButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (alreadyVoted) return;
+            pendingButton = button;
+            confirmText.textContent = `Are you sure you want to vote for ${button.dataset.party}? This cannot be undone.`;
+            overlay.classList.add('show');
+        });
+    });
+
+    // Cancel
+    btnCancel.addEventListener('click', () => {
+        overlay.classList.remove('show');
+        pendingButton = null;
+    });
+
+    // Confirm — sends party to Django backend
+    btnConfirm.addEventListener('click', () => {
+        overlay.classList.remove('show');
+        if (!pendingButton) return;
+
+        const chosenParty = pendingButton.dataset.party;
+
+        fetch('/castvote', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ party: chosenParty })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                allButtons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.textContent = 'Vote';
+                    btn.classList.remove('voted-button');
+                });
+                pendingButton.textContent = '✔ Voted';
+                pendingButton.classList.add('voted-button');
+                statusMsg.textContent = `✅ Successfully voted for ${chosenParty}. Thank you!`;
+
+            } else if (data.status === 'already_voted') {
+                banner.style.display = 'block';
+                allButtons.forEach(btn => btn.disabled = true);
+                statusMsg.textContent = '⚠️ You have already voted.';
+
+            } else if (data.status === 'not_logged_in') {
+                alert('Session expired. Please login again.');
+                window.location.href = '/login';
+            }
+        })
+        .catch(() => {
+            statusMsg.style.color = '#dc3545';
+            statusMsg.textContent = 'Something went wrong. Please try again.';
+        });
+
+        pendingButton = null;
+    });
+
+    // Close modal on outside click
+    overlay.addEventListener('click', e => {
+        if (e.target === overlay) {
+            overlay.classList.remove('show');
+            pendingButton = null;
+        }
+    });
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+</script>
+
+</body>
+</html>

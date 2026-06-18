@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+
+{% block 'body' %}
+<style>
+    .multicolor-text {
+        margin-top: 90px;
+        align-items: center;
+			text-align: center;
+			font-size: 170px;
+			background: linear-gradient(to left,
+					violet,
+					indigo,
+					blue,
+					green,
+					yellow,
+					orange,
+					red);
+			-webkit-background-clip: text;
+			color: transparent;
+			animation: blink 1s infinite;
+		}
+
+		@keyframes blink {
+        0%, 100% {
+            color: transparent; /* Start and end with transparency */
+        }
+        50% {
+            color: white; /* Show the text in the middle of the animation */
+        }
+    }
+</style>
+
+    <div class="multicolor-text" >
+	Results Coming Soon....
+	</div>
+
+{% endblock %}

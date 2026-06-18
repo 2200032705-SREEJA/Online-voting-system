@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+{% block 'body' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+</head>
+<body>
+    <style>
+        body{ text-align:center; background-image: url("https://www.yeselections.com/hubfs/online%20voting-1.jpg"); background-repeat: no-repeat; background-attachment: fixed; background-size: 100% 100%; }
+        p { font-family: 'Lato', sans-serif; font-weight: 300; text-align: center; font-size: 18px; color: #ffd102; }
+        .frame { width: 90%; margin: 40px auto; text-align: center; }
+        button { margin: 150px; }
+        .custom-btn { width: 130px; height: 40px; color: #000000; border-radius: 5px; padding: 10px 25px; font-family: 'Lato', sans-serif; font-weight: 500; background: transparent; cursor: pointer; transition: all 0.3s ease; position: relative; display: inline-block; box-shadow:inset 2px 2px 2px 0px rgba(0,0,0,0.5), 7px 7px 20px 0px rgba(0,0,0,.1), 4px 4px 5px 0px rgba(0,0,0,.1); outline: none; }
+        .btn-15 { background: #ff9100; border: none; z-index: 1; }
+        .btn-15:after { position: absolute; content: ""; width: 0; height: 100%; top: 0; right: 0; z-index: -1; background-color: #f2ff00; border-radius: 5px; box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5), 7px 7px 20px 0px rgba(0,0,0,.1), 4px 4px 5px 0px rgba(0,0,0,.1); transition: all 0.3s ease; }
+        .btn-15:hover { color: #fff; } .btn-15:hover:after { left: 0; width: 100%; } .btn-15:active { top: 2px; }
+        .btn-14 { background: #ff0000d1; border: none; z-index: 1; }
+        .btn-14:after { position: absolute; content: ""; width: 0; height: 100%; top: 0; right: 0; z-index: -1; background-color: #009dff; border-radius: 5px; box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5), 7px 7px 20px 0px rgba(0,0,0,.1), 4px 4px 5px 0px rgba(0,0,0,.1); transition: all 0.3s ease; }
+        .btn-14:hover { color: #fff; } .btn-14:hover:after { left: 0; width: 100%; } .btn-14:active { top: 2px; }
+        .success-msg{ color: #00ff7f; font-weight:700; font-size:20px; }
+    </style>
+
+    <h1>Feedback Form</h1>
+    {% if msg %}<p class="success-msg">{{ msg }}</p>{% endif %}
+
+    <form action="{% url 'submitfeedback' %}" method="post">
+        {% csrf_token %}
+        <label for="name"><b>Name:</b></label>
+        <input type="text" id="name" name="name" placeholder="Enter name" required>
+        <br><br>
+        <label for="number"><b>Number:</b></label>
+        <input type="tel" id="number" name="number" placeholder="Enter mobile" required>
+        <br><br>
+        <label for="email"><b>Email:</b></label>
+        <input type="email" id="email" name="email" placeholder="Enter email" required>
+        <br><br>
+        <label for="issue"><b>Issue:</b></label>
+        <textarea id="issue" name="issue" rows="4" placeholder="Enter the issues" required></textarea>
+        <br><br>
+        <input class="custom-btn btn-15" type="submit" value="Submit">
+        <button class="custom-btn btn-14"><a href="{% url 'home' %}">Back</a></button>
+    </form>
+</body>
+</html>
+{% endblock %}

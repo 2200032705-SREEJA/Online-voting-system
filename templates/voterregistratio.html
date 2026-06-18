@@ -1,0 +1,251 @@
+{% extends 'index.html' %}
+
+{% block 'body' %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  </head>
+  <body>
+    <style>
+      * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  background-image: url("https://th.bing.com/th/id/R.26e55f393fcfb64483397e20ecd366f8?rik=unxCsUEJYtJJDA&riu=http%3a%2f%2fwww.pngmart.com%2ffiles%2f3%2fVote-PNG-Photos.png&ehk=ZeMfoF7aKL%2bGlHzXOzn8TKQwrP9PCXczTfDUFQxbw70%3d&risl=&pid=ImgRaw&r=0");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size:27% 27%;
+}
+.container {
+  position: relative;
+  max-width: 700px;
+  width: 100%;
+  background: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+.container header {
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: 500;
+  text-align: center;
+}
+.container .form {
+  margin-top: 30px;
+}
+.form .input-box {
+  width: 100%;
+  margin-top: 20px;
+}
+.input-box label {
+  color: #333;
+}
+.form :where(.input-box input, .select-box) {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+  color: #707070;
+  margin-top: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0 15px;
+}
+.input-box input:focus {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+.form .column {
+  display: flex;
+  column-gap: 15px;
+}
+.form .gender-box {
+  margin-top: 20px;
+}
+.gender-box h3 {
+  color: #333;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+.form :where(.gender-option, .gender) {
+  display: flex;
+  align-items: center;
+  column-gap: 50px;
+  flex-wrap: wrap;
+}
+.form .gender {
+  column-gap: 5px;
+}
+.gender input {
+  accent-color: rgb(130, 106, 251);
+}
+.form :where(.gender input, .gender label) {
+  cursor: pointer;
+}
+.gender label {
+  color: #707070;
+}
+.address :where(input, .select-box) {
+  margin-top: 15px;
+}
+.select-box select {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  color: #707070;
+  font-size: 1rem;
+}
+.form button {
+  height: 55px;
+  width: 100%;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-top: 30px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: rgb(130, 106, 251);
+}
+.form button:hover {
+  background: rgb(88, 56, 250);
+}
+/* /Responsive/ */
+@media screen and (max-width: 500px) {
+  .form .column {
+    flex-wrap: wrap;
+  }
+  .form :where(.gender-option, .gender) {
+    row-gap: 15px;
+  }
+}
+#Adhar{
+  outline: 0;
+}
+#Adhar:valid {
+  border-color: green;
+}
+#Adhar:focus:invalid {
+  border-color: red;
+
+}
+    </style>
+    <section class="container">
+      <header>Voter Registration Form</header>
+      <form method="post"  action="{% url 'crateregister' %}" class="form">
+        <div class="input-box">
+          <label>Full Name</label>
+          <input type="text" placeholder="Enter full name"  name="full_name" required />
+        </div>
+
+        <div class="input-box">
+          <label>Adhar Number</label>
+          <input id="Adhar" type="text" placeholder="XXXX-XXXX-XXXX" name="adhar_number" required pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}"/>
+        </div>
+        <br>
+        <label>Education Qualification</label>
+        <div class="select-box">
+         
+          <select>
+            <option hidden>Qualification</option>
+            <option>SSC</option>
+            <option>Intermediate</option>
+            <option>U.G</option>
+            <option>PG</option>
+            <option>Ph.D</option>
+            <option>None</option>
+           </select>
+        </div>
+
+        <div class="column">
+          <div class="input-box">
+            <label>Phone Number</label>
+            <input type="number" placeholder="XXXXXXXXXX"  name="phone_number" required pattern="[0-9]{10}" />
+          </div>
+          <div class="input-box">
+            <label>Birth Date</label>
+            <input type="date" placeholder="Enter birth date" name="birth_date" required max="2005-12-31" min="1930-12-01"/>
+          </div>
+        </div>
+        <div class="gender-box">
+          <h3>Gender</h3>
+          <div class="gender-option">
+            <div class="gender">
+              <input type="radio" id="check-male" name="gender" checked  />
+              <label for="check-male">male</label>
+            </div>
+            <div class="gender">
+              <input type="radio" id="check-female" name="gender" />
+              <label for="check-female">Female</label>
+            </div>
+            <div class="gender">
+              <input type="radio" id="check-other" name="gender" />
+              <label for="check-other">prefer not to say</label>
+            </div>
+          </div>
+        </div>
+        <div class="input-box address">
+          <label>Address</label>
+          <input type="text" placeholder="Enter street address"  name="address" required />
+          <!-- <input type="text" placeholder="Enter street address line 2" required /> -->
+          <!-- <div class="column">
+            <div class="select-box">
+              <select>
+                <option hidden>Country</option>
+                <option>India</option>
+              </select>
+            </div>
+            <input type="text" placeholder="Enter your city" required />
+          </div> -->
+          <!-- <div class="column">
+            <input type="text" placeholder="Enter your region" required />
+            <input type="text" placeholder="Enter your pincode" required/>
+          </div>
+        </div> -->
+        <input type="submit" value="submit">
+        <button><a href="{% url 'home' %}">Back</a></button>
+      </form>
+    </section>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const form = document.querySelector('.form');
+          form.addEventListener('submit', function(event) {
+              event.preventDefault(); // Prevent the form from actually submitting
+
+              // Assuming you have successfully processed the form data on the server-side
+              // You can replace this with your actual server response handling logic
+              const registrationSuccessful = true;
+
+              if (registrationSuccessful) {
+                  // Create a success message element
+                  const successMessage = document.createElement('p');
+                  successMessage.textContent = 'Registration successfully completed!';
+                  successMessage.style.color = 'green';
+
+                  // Insert the success message after the form
+                  form.parentNode.insertBefore(successMessage, form.nextSibling);
+
+                  // Reset the form
+                  form.reset();
+              }
+          });
+      });
+  </script>
+  </body>
+</html>
+{% endblock %}
