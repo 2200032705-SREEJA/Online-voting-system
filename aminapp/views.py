@@ -42,17 +42,29 @@ def partyvotes(request):
     if not request.session.get("admin_logged_in"):
         return redirect("adminlogin")
 
-    party_votes = Candidate.objects.annotate(
-        total_votes=Count('vote')
-    ).order_by('-total_votes')
+    # Aggregate from signup.voted_party instead of Vote/Candidate tables —
+    # castvote() only creates a Vote row if a matching Candidate exists in
+    # the DB, which isn't guaranteed, so that table can stay empty even
+    # after real votes are cast. signup.voted_party is always set on vote.
+    party_votes = (
+        signup.objects.filter(voted=True)
+        .exclude(voted_party="")
+        .values("voted_party")
+        .annotate(total_votes=Count("voted_party"))
+        .order_by("-total_votes")
+    )
 
-    total_voted = Vote.objects.count()
+    party_votes = [
+        {"party": row["voted_party"], "total_votes": row["total_votes"]}
+        for row in party_votes
+    ]
+
+    total_voted = signup.objects.filter(voted=True).count()
 
     return render(request, "partyvotes.html", {
         "party_votes": party_votes,
         "total_voted": total_voted,
     })
-
 
 # ==========================
 # VOTERS PAGE
