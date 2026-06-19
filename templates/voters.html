@@ -1,115 +1,501 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Voter Details</title>
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            background:#f4f6f9;
-            padding:20px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voter Details | VoteBharat Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Poppins:wght@400;500;600;700&display=swap');
 
-        .navbar-links{
-            margin-bottom:20px;
-        }
+    :root {
+      --saffron: #FF9933;
+      --green: #138808;
+      --ink: #0B1220;
+      --ink2: #121A2E;
+    }
 
-        .navbar-links a{
-            text-decoration:none;
-            padding:10px 15px;
-            background:#007bff;
-            color:white;
-            border-radius:5px;
-            margin-right:10px;
-        }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #f4f6fb; min-height: 100vh; }
 
-        h1{
-            margin-bottom:20px;
-        }
+    /* TRICOLOR BAR */
+    .tricolor-bar {
+      height: 5px;
+      background: linear-gradient(90deg, #FF9933 33.3%, #FFFFFF 33.3% 66.6%, #138808 66.6%);
+    }
 
-        table{
-            width:100%;
-            border-collapse:collapse;
-            background:white;
-        }
+    /* NAVBAR */
+    nav {
+      background: linear-gradient(135deg, #0B1220, #121A2E);
+      padding: 0 40px;
+      height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      color: #fff;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-logo span { color: var(--saffron); }
+    .nav-links { display: flex; gap: 8px; }
+    .nav-links a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.75);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .nav-links a:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .nav-links a.active {
+      background: rgba(255,153,51,0.15);
+      color: var(--saffron);
+      border: 1px solid rgba(255,153,51,0.3);
+    }
+    .nav-links a.logout { color: #ff6b84; }
+    .nav-links a.logout:hover { background: rgba(255,107,132,0.1); }
 
-        th{
-            background:#1a1a2e;
-            color:white;
-            padding:12px;
-        }
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #0B1220, #121A2E);
+      color: white;
+      text-align: center;
+      padding: 48px 20px 52px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,153,51,0.12);
+      border: 1px solid rgba(255,153,51,0.3);
+      border-radius: 20px;
+      padding: 5px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--saffron);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      position: relative;
+    }
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 38px;
+      font-weight: 800;
+      position: relative;
+      margin-bottom: 8px;
+    }
+    .hero p { color: rgba(255,255,255,0.55); font-size: 14px; position: relative; }
 
-        td{
-            padding:12px;
-            border-bottom:1px solid #ddd;
-        }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
-        tr:hover{
-            background:#f5f5f5;
-        }
+    /* CONTAINER */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 36px auto 50px;
+    }
 
-        .voted{
-            color:green;
-            font-weight:bold;
-        }
+    /* STAT CARDS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px 20px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-left: 4px solid var(--saffron);
+    }
+    .stat-card.green-card  { border-left-color: #22c55e; }
+    .stat-card.red-card    { border-left-color: #ef4444; }
+    .stat-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: rgba(255,153,51,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      color: var(--saffron);
+      flex-shrink: 0;
+    }
+    .green-card .stat-icon { background: rgba(34,197,94,0.1); color: #22c55e; }
+    .red-card   .stat-icon { background: rgba(239,68,68,0.1);  color: #ef4444; }
+    .stat-info h3 {
+      font-size: 11px; color: #888; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;
+    }
+    .stat-info .val { font-size: 26px; font-weight: 700; color: #121A2E; line-height: 1; }
 
-        .not-voted{
-            color:red;
-            font-weight:bold;
-        }
-    </style>
+    /* SEARCH BAR */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .search-wrap {
+      position: relative;
+    }
+    .search-wrap i {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      color: #aaa;
+      font-size: 13px;
+    }
+    .search-wrap input {
+      padding: 9px 14px 9px 34px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Poppins', sans-serif;
+      outline: none;
+      width: 220px;
+      transition: border 0.2s;
+    }
+    .search-wrap input:focus { border-color: var(--saffron); }
+
+    /* TABLE */
+    .table-container {
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: linear-gradient(135deg, #0B1220, #121A2E); }
+    th {
+      color: rgba(255,255,255,0.75);
+      padding: 15px 18px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+    tbody tr { transition: background 0.15s; }
+    tbody tr:hover { background: #f8f9ff; }
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: middle;
+      font-size: 13.5px;
+      color: #333;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+
+    /* RANK */
+    .rank {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: #f0f1f5;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 13px; color: #666;
+    }
+
+    /* USERNAME */
+    .username-cell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .avatar {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: rgba(255,153,51,0.15);
+      color: var(--saffron);
+      font-weight: 700;
+      font-size: 13px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      text-transform: uppercase;
+    }
+    .username-text { font-weight: 600; color: #121A2E; }
+
+    /* PASSWORD CELL */
+    .pw-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pw-text {
+      font-family: monospace;
+      font-size: 14px;
+      color: #333;
+      letter-spacing: 1px;
+    }
+    .pw-text.masked {
+      letter-spacing: 3px;
+      color: #bbb;
+      font-size: 16px;
+    }
+    .eye-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #aaa;
+      font-size: 13px;
+      padding: 4px 6px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+      flex-shrink: 0;
+    }
+    .eye-btn:hover { color: var(--saffron); background: rgba(255,153,51,0.08); }
+
+    /* STATUS BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge.voted {
+      background: rgba(34,197,94,0.12);
+      color: #16a34a;
+      border: 1px solid rgba(34,197,94,0.25);
+    }
+    .badge.not-voted {
+      background: rgba(239,68,68,0.1);
+      color: #dc2626;
+      border: 1px solid rgba(239,68,68,0.2);
+    }
+
+    /* VOTED FOR */
+    .party-tag {
+      background: rgba(255,153,51,0.1);
+      color: #b35900;
+      border: 1px solid rgba(255,153,51,0.25);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .no-party { color: #ccc; font-size: 18px; }
+
+    /* EMPTY */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #bbb;
+    }
+    .empty-state i { font-size: 40px; margin-bottom: 14px; display: block; opacity: 0.4; }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      color: #aaa;
+      font-size: 13px;
+      padding: 20px 0 30px;
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 16px; }
+      .nav-links a span { display: none; }
+      .container { width: 95%; }
+      table { font-size: 12px; }
+      td, th { padding: 10px 12px; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="navbar-links">
-    <a href="/aminhome">📊 Dashboard</a>
-    <a href="/partyvotes">🗳 Votes By Party</a>
-    <a href="/voters">👥 Voter Details</a>
-    <a href="/logout">🚪 Logout</a>
+<div class="tricolor-bar"></div>
+
+<nav>
+  <a href="/aminhome" class="nav-logo">
+    🗳️ Vote<span>Bharat</span>
+    <span style="color:rgba(255,255,255,0.3);font-size:14px;font-weight:400;">Admin</span>
+  </a>
+  <div class="nav-links">
+    <a href="/aminhome"><i class="fas fa-chart-line"></i> Dashboard</a>
+    <a href="/partyvotes"><i class="fas fa-poll"></i> Votes By Party</a>
+    <a href="/voters" class="active"><i class="fas fa-users"></i> Voter Details</a>
+    <a href="/logout" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">
+    <i class="fas fa-circle" style="font-size:7px;animation:blink 1.4s infinite"></i>
+    Registered Voters
+  </div>
+  <h1>Voter Details</h1>
+  <p>Complete list of registered voters and their voting status</p>
 </div>
 
-<h1>👤 Registered Voters</h1>
+<div class="container">
 
-<table>
-    <thead>
+  <!-- STAT CARDS -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-users"></i></div>
+      <div class="stat-info">
+        <h3>Total Registered</h3>
+        <div class="val">{{ voters|length }}</div>
+      </div>
+    </div>
+    <div class="stat-card green-card">
+      <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="stat-info">
+        <h3>Voted</h3>
+        <div class="val">{{ voters|length }}</div>
+      </div>
+    </div>
+    <div class="stat-card red-card">
+      <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+      <div class="stat-info">
+        <h3>Not Voted</h3>
+        <div class="val">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="section-label"><i class="fas fa-table"></i> Voter Registry</div>
+    <div class="search-wrap">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Search voters..." onkeyup="filterTable()">
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-container">
+    <table id="voterTable">
+      <thead>
         <tr>
-            <th>#</th>
-            <th>Username</th>
-            <th>Phone</th>
-            <th>Age</th>
-            <th>Password</th>
-            <th>Status</th>
-            <th>Voted For</th>
+          <th>#</th>
+          <th>Voter</th>
+          <th>Phone</th>
+          <th>Age</th>
+          <th>Password</th>
+          <th>Status</th>
+          <th>Voted For</th>
         </tr>
-    </thead>
-
-    <tbody>
+      </thead>
+      <tbody>
         {% for voter in voters %}
         <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ voter.username }}</td>
-            <td>{{ voter.phone }}</td>
-            <td>{{ voter.age }}</td>
-            <td>{{ voter.password }}</td>
+          <td><div class="rank">{{ forloop.counter }}</div></td>
 
-            <td>
-                {% if voter.voted %}
-                    <span class="voted">✔ Voted</span>
-                {% else %}
-                    <span class="not-voted">✘ Not Voted</span>
-                {% endif %}
-            </td>
+          <td>
+            <div class="username-cell">
+              <div class="avatar">{{ voter.username|slice:":1" }}</div>
+              <span class="username-text">{{ voter.username }}</span>
+            </div>
+          </td>
 
-            <td>
-                {% if voter.voted_party %}
-                    {{ voter.voted_party }}
-                {% else %}
-                    —
-                {% endif %}
-            </td>
+          <td>{{ voter.phone }}</td>
+          <td>{{ voter.age }}</td>
+
+          <td>
+            <div class="pw-cell">
+              <span class="pw-text masked" data-pass="{{ voter.password }}">••••••••</span>
+              <button class="eye-btn" onclick="togglePw(this)" title="Show/hide password">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </td>
+
+          <td>
+            {% if voter.voted %}
+              <span class="badge voted"><i class="fas fa-check"></i> Voted</span>
+            {% else %}
+              <span class="badge not-voted"><i class="fas fa-times"></i> Not Voted</span>
+            {% endif %}
+          </td>
+
+          <td>
+            {% if voter.voted_party %}
+              <span class="party-tag">{{ voter.voted_party }}</span>
+            {% else %}
+              <span class="no-party">—</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7">
+            <div class="empty-state">
+              <i class="fas fa-users-slash"></i>
+              No voters registered yet.
+            </div>
+          </td>
         </tr>
         {% endfor %}
-    </tbody>
-</table>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="footer">VoteBharat Online Voting System &copy; 2024</div>
+
+<script>
+  function filterTable() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const rows = document.querySelectorAll('#voterTable tbody tr');
+    rows.forEach(row => {
+      row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+  }
+
+  function togglePw(btn) {
+    const span = btn.previousElementSibling;
+    const icon = btn.querySelector('i');
+    const isHidden = span.classList.contains('masked');
+    if (isHidden) {
+      span.textContent = span.dataset.pass;
+      span.classList.remove('masked');
+      icon.className = 'fas fa-eye-slash';
+    } else {
+      span.textContent = '••••••••';
+      span.classList.add('masked');
+      icon.className = 'fas fa-eye';
+    }
+  }
+</script>
 
 </body>
-</html>
+</html> 

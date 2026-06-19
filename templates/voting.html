@@ -1,324 +1,442 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Picture Voting Animation</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-color: #f0f0f0;
-            padding: 30px 20px;
-        }
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+h2.sr-only { position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0); }
 
-        .voting-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        .picture-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 16px;
-            padding: 24px 20px;
-            width: 200px;
-            animation: slideIn 1s ease-out;
-        }
-
-        .picture {
-            width: 150px;
-            height: 150px;
-            border: 2px solid #333;
-            border-radius: 8px;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .name h2 { font-size: 16px; font-weight: 600; text-align: center; color: #333; }
-
-        .vote-button {
-            padding: 10px 0;
-            width: 100%;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 15px;
-            transition: background-color 0.2s;
-        }
-
-        .vote-button:hover:not(:disabled) { background-color: #0056b3; }
-        .vote-button:disabled { cursor: not-allowed; opacity: 0.5; }
-        .vote-button.voted-button { background-color: #28a745; opacity: 1; font-weight: 600; }
-
-        #status-message {
-            margin-top: 30px;
-            font-size: 16px;
-            font-weight: 500;
-            text-align: center;
-            min-height: 24px;
-        }
-
-        @keyframes slideIn {
-            0%   { transform: translateX(-100%); opacity: 0; }
-            100% { transform: translateX(0);     opacity: 1; }
-        }
-
-        #already-voted-banner {
-            display: none;
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            color: #856404;
-            border-radius: 12px;
-            padding: 14px 24px;
-            margin-bottom: 24px;
-            font-size: 15px;
-            font-weight: 500;
-            text-align: center;
-        }
-
-        #confirm-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-        }
-        #confirm-overlay.show { display: flex; }
-
-        #confirm-box {
-            background: #fff;
-            border-radius: 16px;
-            padding: 32px 28px;
-            max-width: 320px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-        }
-        #confirm-box h3 { font-size: 18px; font-weight: 600; color: #222; margin-bottom: 8px; }
-        #confirm-box p  { font-size: 14px; color: #666; margin-bottom: 24px; }
-
-        .confirm-actions { display: flex; gap: 12px; justify-content: center; }
-
-        .btn-cancel {
-            padding: 10px 28px; border-radius: 10px;
-            border: 1px solid #ccc; background: #fff;
-            color: #333; font-size: 14px; cursor: pointer;
-        }
-        .btn-cancel:hover { background: #f5f5f5; }
-
-        .btn-confirm {
-            padding: 10px 28px; border-radius: 10px;
-            border: none; background: #007bff;
-            color: #fff; font-size: 14px; font-weight: 600; cursor: pointer;
-        }
-        .btn-confirm:hover { background: #0056b3; }
-        .home-btn{
-    display:inline-block;
-    margin-top:20px;
-    padding:12px 28px;
-    background:#007bff;
-    color:white;
-    text-decoration:none;
-    border-radius:12px;
-    font-size:15px;
-    font-weight:600;
-    transition:0.3s;
+.page {
+  width: 100vw; min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  background: #0a1628;
+  background-image:
+    radial-gradient(ellipse at 20% 30%, rgba(0,180,180,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(24,95,165,0.18) 0%, transparent 50%);
 }
 
-.home-btn:hover{
-    background:#0056b3;
-    
+.tricolor-bar {
+  width: 100%; height: 5px; flex-shrink: 0;
+  background: linear-gradient(to right, #FF9933 33.3%, #FFFFFF 33.3% 66.6%, #138808 66.6%);
 }
-    </style>
-</head>
-<body>
 
-    {% csrf_token %}
+[data-screen] { display: none; width: 100%; flex: 1; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1rem; gap: 1rem; }
+[data-screen].active { display: flex; }
 
-    <div id="already-voted-banner">
-    ⚠️ You have already cast your vote for {{ voted_party }}. Each person can only vote once.
+.inner { width: 100%; max-width: 750px; display: flex; flex-direction: column; gap: 1rem; }
+
+.nav-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 18px;
+  background: rgba(255,255,255,0.07);
+  border: 0.5px solid rgba(255,255,255,0.14);
+  border-radius: 12px;
+}
+.nav-title { font-size: 14px; font-weight: 500; color: #fff; display: flex; align-items: center; gap: 7px; }
+.nav-title i { color: #85B7EB; font-size: 16px; }
+.nav-sub { font-size: 11px; color: rgba(255,255,255,0.4); }
+.nav-home-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 7px 14px;
+  border: 0.5px solid rgba(255,255,255,0.22);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.85);
+  font-size: 12px; cursor: pointer; text-decoration: none;
+}
+.nav-home-btn:hover { background: rgba(255,255,255,0.14); }
+.nav-back-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 7px 14px;
+  border: 0.5px solid rgba(255,255,255,0.22);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.85);
+  font-size: 12px; cursor: pointer;
+}
+.nav-back-btn:hover { background: rgba(255,255,255,0.14); }
+
+.card {
+  background: rgba(255,255,255,0.06);
+  border: 0.5px solid rgba(255,255,255,0.13);
+  border-radius: 18px;
+  padding: 2.2rem 1.8rem;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  text-align: center;
+}
+.icon-circle {
+  width: 66px; height: 66px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.icon-circle.blue { background: rgba(24,95,165,0.28); border: 0.5px solid rgba(133,183,235,0.3); }
+.icon-circle.green { background: rgba(99,153,34,0.28); border: 0.5px solid rgba(192,221,151,0.3); }
+.icon-circle i { font-size: 32px; }
+.icon-circle.blue i { color: #85B7EB; }
+.icon-circle.green i { color: #C0DD97; }
+
+.card h2 { font-size: 20px; font-weight: 500; color: #fff; }
+.card p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; max-width: 300px; }
+
+.btn-orange {
+  width: 100%; padding: 13px 0;
+  background: #FF9933; color: #2C1A00;
+  border: none; border-radius: 10px;
+  font-size: 14px; font-weight: 500; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  text-decoration: none;
+}
+.btn-orange:hover { background: #e8872a; }
+
+.info-strip {
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(255,255,255,0.09);
+  border-radius: 10px; padding: 12px 16px;
+  display: flex; gap: 0; justify-content: space-around; flex-wrap: wrap;
+}
+.info-item { font-size: 12px; color: rgba(255,255,255,0.45); display: flex; align-items: center; gap: 5px; }
+.info-item i { font-size: 13px; color: #85B7EB; }
+
+.evm-panel {
+  background: #F4F4F0;
+  border: 4px solid #185FA5;
+  border-radius: 14px; overflow: hidden;
+}
+.evm-header {
+  background: #185FA5; padding: 10px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.evm-header-title { font-size: 11px; font-weight: 500; color: #E6F1FB; letter-spacing: 0.06em; text-transform: uppercase; }
+.evm-lights { display: flex; gap: 6px; }
+.light { width: 11px; height: 11px; border-radius: 50%; }
+.light-red { background: #E24B4A; }
+.light-green { background: #639922; opacity: 0.3; transition: opacity 0.5s; }
+.tricolor-strip { height: 4px; background: linear-gradient(to right, #FF9933 33.3%, #fff 33.3% 66.6%, #138808 66.6%); }
+
+.evm-col-headers {
+  display: grid; grid-template-columns: 56px 1fr 58px;
+  background: #DCE8F6; border-bottom: 1px solid #185FA5; padding: 6px 12px;
+}
+.col-label { font-size: 10px; font-weight: 500; color: #0C447C; text-align: center; letter-spacing: 0.06em; text-transform: uppercase; }
+.col-label.left { text-align: left; }
+
+.party-row {
+  display: grid; grid-template-columns: 56px 1fr 58px;
+  align-items: center; padding: 8px 12px; gap: 8px;
+  background: #FAFAF7; border-bottom: 0.5px solid #C8D8EC;
+  transition: background 0.12s;
+}
+.party-row:last-child { border-bottom: none; }
+.party-row:hover { background: #EEF4FC; }
+.party-row.voted-row { background: #EAF3DE; }
+
+.party-logo-box {
+  width: 44px; height: 44px;
+  border: 0.5px solid #C8D8EC; border-radius: 8px;
+  background-size: cover; background-position: center;
+  background-color: #eee;
+}
+.party-name-cell { font-size: 12px; font-weight: 500; color: #1a1a2e; padding-left: 4px; line-height: 1.3; }
+.vote-btn-cell { display: flex; justify-content: center; }
+
+.evm-btn {
+  width: 42px; height: 32px;
+  background: #E8E8E0; border: 2px solid #888;
+  border-radius: 6px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; transition: background 0.12s, border-color 0.12s;
+}
+.evm-btn:hover:not(:disabled) { background: #B5D4F4; border-color: #185FA5; }
+.evm-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.evm-btn.pressed { background: #C0DD97; border-color: #3B6D11; opacity: 1; }
+.evm-btn-inner { width: 13px; height: 13px; background: #666; border-radius: 3px; }
+.evm-btn.pressed .evm-btn-inner { background: #27500A; }
+.check-badge {
+  display: none; position: absolute; top: -7px; right: -7px;
+  width: 16px; height: 16px; background: #27500A; border-radius: 50%;
+  align-items: center; justify-content: center;
+}
+.check-badge i { font-size: 9px; color: #C0DD97; }
+.evm-btn.pressed .check-badge { display: flex; }
+
+.confirm-panel {
+  background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.18);
+  border-radius: 14px; padding: 16px 18px;
+  display: none; flex-direction: column; gap: 10px; text-align: center;
+}
+.confirm-panel.visible { display: flex; }
+.confirm-panel h3 { font-size: 15px; font-weight: 500; color: #fff; }
+.confirm-panel p { font-size: 13px; color: rgba(255,255,255,0.6); }
+.confirm-row { display: flex; gap: 10px; justify-content: center; }
+.btn-cancel-sm {
+  padding: 8px 20px; border-radius: 8px;
+  border: 0.5px solid rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.8);
+  font-size: 13px; cursor: pointer;
+}
+.btn-cancel-sm:hover { background: rgba(255,255,255,0.13); }
+.btn-go {
+  padding: 8px 22px; border-radius: 8px;
+  border: none; background: #FF9933; color: #2C1A00;
+  font-size: 13px; font-weight: 500; cursor: pointer;
+}
+.btn-go:hover { background: #e8872a; }
+
+.status-bar {
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.1);
+  border-radius: 10px; font-size: 13px; color: rgba(255,255,255,0.5);
+  text-align: center; min-height: 40px; display: flex; align-items: center; justify-content: center;
+}
+.status-bar.success { background: rgba(99,153,34,0.18); color: #C0DD97; border-color: rgba(99,153,34,0.35); }
+.status-bar.warn { background: rgba(255,153,51,0.12); color: #FAC775; border-color: rgba(255,153,51,0.3); }
+
+.footer-note {
+  background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.07);
+  border-radius: 10px; padding: 11px 16px;
+  font-size: 12px; color: rgba(255,255,255,0.35); text-align: center;
+}
+
+.already-banner {
+  background: rgba(255,153,51,0.12); border: 0.5px solid rgba(255,153,51,0.3);
+  border-radius: 10px; padding: 12px 16px;
+  font-size: 13px; color: #FAC775; text-align: center;
+  display: none;
+}
+</style>
+
+<div class="page">
+<h2 class="sr-only">Electronic voting machine</h2>
+<div class="tricolor-bar"></div>
+
+<!-- HOME SCREEN -->
+<div data-screen="home" class="active">
+  <div class="inner">
+    <div class="nav-bar">
+      <span class="nav-title"><i class="ti ti-shield-check" aria-hidden="true"></i> Voting portal</span>
+      <a href="/home" class="nav-home-btn">
+        <i class="ti ti-home" aria-hidden="true"></i> Home
+      </a>
     </div>
+    <div class="card">
 
-    <div id="confirm-overlay">
-        <div id="confirm-box">
-            <h3>Confirm Your Vote</h3>
-            <p id="confirm-text"></p>
-            <div class="confirm-actions">
-                <button class="btn-cancel" id="btn-cancel">Cancel</button>
-                <button class="btn-confirm" id="btn-confirm">Yes, Vote</button>
-            </div>
-        </div>
+    <img
+    src="https://cdn-icons-png.flaticon.com/512/681/681494.png"
+    alt="Vote Symbol"
+    style="width:120px;height:auto;margin-bottom:15px;">
+      <h2>Electronic voting machine</h2>
+      <p>Your vote is secret and cannot be changed after submission. Each person can only vote once.</p>
+      <button class="btn-orange" onclick="go('vote')">
+        <i class="ti ti-arrow-right" aria-hidden="true"></i> Go to voting panel
+      </button>
     </div>
-
-    <div class="voting-wrapper">
-        <div class="picture-container">
-            <div class="picture" style="background-image: url('https://www.telugubulletin.com/wp-content/uploads/2019/11/160718-tdp.jpg');"></div>
-            <div class="name"><h2>TDP</h2></div>
-            <button class="vote-button" data-party="TDP">Vote</button>
-        </div>
-        <div class="picture-container">
-            <div class="picture" style="background-image: url('https://th.bing.com/th/id/R.328f33f68eadc2ee7ca0c58a1764716c?rik=%2bRJNQ1xsQpP1Iw&riu=http%3a%2f%2f2.bp.blogspot.com%2f-AZG2T7MfwzI%2fUy5604lO_VI%2fAAAAAAAAAYA%2f4DK0QoQa2yw%2fs1600%2fJana-Sena-Party-Logo-Wallpaper.jpg&ehk=ryJhFVj1HzCjV8Pc4TiTH2FWJaee1f1OOadUwIQXmNw%3d&risl=&pid=ImgRaw&r=0');"></div>
-            <div class="name"><h2>JANASENA</h2></div>
-            <button class="vote-button" data-party="JANASENA">Vote</button>
-        </div>
-        <div class="picture-container">
-            <div class="picture" style="background-image: url('https://4.bp.blogspot.com/-URiCjwBMxVc/TtzXRyJi90I/AAAAAAAADj8/MrZd0T5ewIg/s1600/bjp-flag.jpg');"></div>
-            <div class="name"><h2>BJP</h2></div>
-            <button class="vote-button" data-party="BJP">Vote</button>
-        </div>
-        <div class="picture-container">
-            <div class="picture" style="background-image: url('https://qph.fs.quoracdn.net/main-qimg-2b60b97c4135f698bd9f5a7dab9d93ec');"></div>
-            <div class="name"><h2>YSRCP</h2></div>
-            <button class="vote-button" data-party="YSRCP">Vote</button>
-        </div>
-        <div class="picture-container">
-            <div class="picture" style="background-image: url('https://www.oneindia.com/img/2016/03/nota-04-1457086162.jpg');"></div>
-            <div class="name"><h2>NOTA</h2></div>
-            <button class="vote-button" data-party="NOTA">Vote</button>
-        </div>
+    <div class="info-strip">
+      <span class="info-item"><i class="ti ti-lock" aria-hidden="true"></i> Encrypted</span>
+      <span class="info-item"><i class="ti ti-eye-off" aria-hidden="true"></i> Anonymous</span>
+      <span class="info-item"><i class="ti ti-user-check" aria-hidden="true"></i> One vote only</span>
     </div>
-<div id="status-message"></div>
-
-<div id="home-container" style="display:none; text-align:center; margin-top:20px;">
-    <a href="/home" class="home-btn">
-        🏠 Home
-    </a>
+  </div>
 </div>
 
-<div id="home-container" style="display:none; text-align:center; margin-top:20px;">
-    <a href="/checkaminlogin" class="home-btn">
-        🏠 Back to Home
-    </a>
+<!-- VOTE SCREEN -->
+<div data-screen="vote">
+  <div class="inner">
+    <div class="nav-bar">
+      <button class="nav-back-btn" onclick="go('home')"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
+      <span class="nav-title" style="font-size:13px;">Voting panel</span>
+      <a href="/home" class="nav-home-btn"><i class="ti ti-home" aria-hidden="true"></i> Home</a>
+    </div>
+
+    <div class="already-banner" id="already-banner">
+      <i class="ti ti-alert-circle" aria-hidden="true"></i>
+      You have already voted. Each person can only vote once.
+    </div>
+
+    <div class="evm-panel">
+        <div style="text-align:center; margin:15px 0;">
+    <img
+        src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+        alt="Vote"
+        style="width:120px; height:auto;">
+</div>
+      <div class="evm-header">
+        <span class="evm-header-title">Electronic voting machine</span>
+        <div class="evm-lights">
+          <div class="light light-red"></div>
+          <div class="light light-green" id="light-green"></div>
+        </div>
+      </div>
+      <div class="tricolor-strip"></div>
+      <div class="evm-col-headers">
+        <span class="col-label left">Symbol</span>
+        <span class="col-label">Party</span>
+        <span class="col-label">Vote</span>
+      </div>
+      <div id="party-list">
+        <div class="party-row" data-party="TDP">
+          <div class="party-logo-box" style="background-image:url('https://www.telugubulletin.com/wp-content/uploads/2019/11/160718-tdp.jpg')"></div>
+          <div class="party-name-cell">Telugu Desam Party</div>
+          <div class="vote-btn-cell"><button class="evm-btn" data-party="TDP"><div class="evm-btn-inner"></div><div class="check-badge"><i class="ti ti-check" aria-hidden="true"></i></div></button></div>
+        </div>
+        <div class="party-row" data-party="JANASENA">
+          <div class="party-logo-box" style="background-image:url('https://th.bing.com/th/id/R.328f33f68eadc2ee7ca0c58a1764716c?rik=%2bRJNQ1xsQpP1Iw&riu=http%3a%2f%2f2.bp.blogspot.com%2f-AZG2T7MfwzI%2fUy5604lO_VI%2fAAAAAAAAAYA%2f4DK0QoQa2yw%2fs1600%2fJana-Sena-Party-Logo-Wallpaper.jpg&ehk=ryJhFVj1HzCjV8Pc4TiTH2FWJaee1f1OOadUwIQXmNw%3d&risl=&pid=ImgRaw&r=0')"></div>
+          <div class="party-name-cell">Jana Sena Party</div>
+          <div class="vote-btn-cell"><button class="evm-btn" data-party="JANASENA"><div class="evm-btn-inner"></div><div class="check-badge"><i class="ti ti-check" aria-hidden="true"></i></div></button></div>
+        </div>
+        <div class="party-row" data-party="BJP">
+          <div class="party-logo-box" style="background-image:url('https://4.bp.blogspot.com/-URiCjwBMxVc/TtzXRyJi90I/AAAAAAAADj8/MrZd0T5ewIg/s1600/bjp-flag.jpg')"></div>
+          <div class="party-name-cell">Bharatiya Janata Party</div>
+          <div class="vote-btn-cell"><button class="evm-btn" data-party="BJP"><div class="evm-btn-inner"></div><div class="check-badge"><i class="ti ti-check" aria-hidden="true"></i></div></button></div>
+        </div>
+        <div class="party-row" data-party="YSRCP">
+          <div class="party-logo-box" style="background-image:url('https://qph.fs.quoracdn.net/main-qimg-2b60b97c4135f698bd9f5a7dab9d93ec')"></div>
+          <div class="party-name-cell">YSR Congress Party</div>
+          <div class="vote-btn-cell"><button class="evm-btn" data-party="YSRCP"><div class="evm-btn-inner"></div><div class="check-badge"><i class="ti ti-check" aria-hidden="true"></i></div></button></div>
+        </div>
+        <div class="party-row" data-party="NOTA">
+          <div class="party-logo-box" style="background-image:url('https://www.oneindia.com/img/2016/03/nota-04-1457086162.jpg')"></div>
+          <div class="party-name-cell">None of the above</div>
+          <div class="vote-btn-cell"><button class="evm-btn" data-party="NOTA"><div class="evm-btn-inner"></div><div class="check-badge"><i class="ti ti-check" aria-hidden="true"></i></div></button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="confirm-panel" id="confirm-panel">
+      <h3>Confirm your vote</h3>
+      <p id="confirm-text"></p>
+      <div class="confirm-row">
+        <button class="btn-cancel-sm" id="btn-cancel">Cancel</button>
+        <button class="btn-go" id="btn-confirm"><i class="ti ti-check" aria-hidden="true"></i> Confirm vote</button>
+      </div>
+    </div>
+
+    <div class="status-bar" id="status-bar">Press a button next to your party to vote</div>
+  </div>
 </div>
 
-<div id="home-container" style="display:none; text-align:center; margin-top:20px;">
-    <a href="/checkaminlogin" class="home-btn">
-        🏠 Back to Home
-    </a>
+<!-- DONE SCREEN -->
+<div data-screen="done">
+  <div class="inner">
+    <div class="nav-bar">
+      <span class="nav-title"><i class="ti ti-shield-check" aria-hidden="true"></i> Voting portal</span>
+      <a href="/home" class="nav-home-btn">
+    <i class="ti ti-home"></i> Home
+</a>
+    </div>
+    <div class="card">
+      <div class="icon-circle green"><i class="ti ti-rosette-discount-check" aria-hidden="true"></i></div>
+      <h2>Thank you for voting!</h2>
+      <p id="done-msg">Your vote has been recorded securely.</p>
+      <a href="/home" class="btn-orange">
+        <i class="ti ti-home" aria-hidden="true"></i> Go to home
+      </a>
+    </div>
+    <div class="footer-note">
+      <i class="ti ti-lock" aria-hidden="true" style="font-size:13px;vertical-align:-2px;margin-right:4px;"></i>
+      Your vote is confidential and encrypted. Results will be announced after voting closes.
+    </div>
+  </div>
 </div>
-<div id="home-container" style="display:none; text-align:center; margin-top:20px;">
-    <a href="/checkaminlogin" class="home-btn">
-    🏠 Home
-    </a>
+
+<div class="tricolor-bar"></div>
 </div>
 
 <script>
-    const alreadyVoted = "{{ already_voted }}" === "True";
+const alreadyVoted = "{{ already_voted }}" === "True";
+const votedParty = "{{ voted_party }}";
 
-    const allButtons  = document.querySelectorAll('.vote-button');
-    const overlay     = document.getElementById('confirm-overlay');
-    const confirmText = document.getElementById('confirm-text');
-    const btnConfirm  = document.getElementById('btn-confirm');
-    const btnCancel   = document.getElementById('btn-cancel');
-    const statusMsg   = document.getElementById('status-message');
-    const banner      = document.getElementById('already-voted-banner');
-
-    let pendingButton = null;
-
-    if (alreadyVoted) {
-    banner.style.display = 'block';
-    allButtons.forEach(btn => btn.disabled = true);
-    statusMsg.style.color = '#856404';
-    statusMsg.textContent = 'You have already voted for {{ voted_party }}. Thank you!';
-    document.getElementById('home-container').style.display = 'block';
+function go(screen) {
+  document.querySelectorAll('[data-screen]').forEach(el => el.classList.remove('active'));
+  document.querySelector('[data-screen="' + screen + '"]').classList.add('active');
 }
 
-    allButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            if (alreadyVoted) return;
-            pendingButton = button;
-            confirmText.textContent = `Are you sure you want to vote for ${button.dataset.party}? This cannot be undone.`;
-            overlay.classList.add('show');
-        });
-    });
+const evmBtns = document.querySelectorAll('.evm-btn');
+const confirmPanel = document.getElementById('confirm-panel');
+const confirmText = document.getElementById('confirm-text');
+const btnConfirm = document.getElementById('btn-confirm');
+const btnCancel = document.getElementById('btn-cancel');
+const statusBar = document.getElementById('status-bar');
+const doneMsg = document.getElementById('done-msg');
+const lightGreen = document.getElementById('light-green');
+const alreadyBanner = document.getElementById('already-banner');
 
-    btnCancel.addEventListener('click', () => {
-        overlay.classList.remove('show');
-        pendingButton = null;
-    });
+let pendingParty = null, pendingBtn = null;
+let hasVoted = alreadyVoted;
 
-    btnConfirm.addEventListener('click', () => {
-        overlay.classList.remove('show');
-        if (!pendingButton) return;
-
-        const chosenButton = pendingButton;
-        const chosenParty  = chosenButton.dataset.party;
-        pendingButton = null;
-
-        fetch('/castvote', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken'),
-            },
-            body: JSON.stringify({ party: chosenParty })
-        })
-        .then(res => {
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            return res.json();
-        })
-        .then(data => {
-            if (data.status === 'success') {
-                allButtons.forEach(btn => {
-                    btn.disabled = true;
-                    btn.textContent = 'Vote';
-                    btn.classList.remove('voted-button');
-                });
-                chosenButton.textContent = '✔ Voted';
-                chosenButton.classList.add('voted-button');
-                statusMsg.style.color = '#28a745';
-                statusMsg.textContent = `✅ Successfully voted for ${chosenParty}. Thank you!`;
-                document.getElementById('home-container').style.display = 'block';
-                document.getElementById('home-container').style.display = 'block';
-                document.getElementById('home-container').style.display = 'block';
-
-            } else if (data.status === 'already_voted') {
-                banner.style.display = 'block';
-                allButtons.forEach(btn => btn.disabled = true);
-                statusMsg.style.color = '#856404';
-                statusMsg.textContent = '⚠️ You have already voted.';
-
-            } else if (data.status === 'not_logged_in') {
-                alert('Session expired. Please login again.');
-                window.location.href = '/login';
-            }
-        })
-        .catch(err => {
-            statusMsg.style.color = '#dc3545';
-            statusMsg.textContent = 'Something went wrong: ' + err.message;
-        });
-    });
-
-    overlay.addEventListener('click', e => {
-        if (e.target === overlay) {
-            overlay.classList.remove('show');
-            pendingButton = null;
-        }
-    });
-
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
+if (alreadyVoted) {
+  alreadyBanner.style.display = 'block';
+  evmBtns.forEach(b => b.disabled = true);
+  statusBar.className = 'status-bar warn';
+  statusBar.textContent = 'You have already voted for ' + votedParty + '. Thank you!';
+  if (votedParty) {
+    const vRow = document.querySelector('.party-row[data-party="' + votedParty + '"]');
+    if (vRow) {
+      vRow.classList.add('voted-row');
+      const vBtn = vRow.querySelector('.evm-btn');
+      if (vBtn) { vBtn.classList.add('pressed'); vBtn.disabled = true; }
     }
-</script>
+  }
+  lightGreen.style.opacity = '1';
+}
 
-</body>
-</html>
+evmBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (hasVoted) return;
+    pendingParty = btn.dataset.party;
+    pendingBtn = btn;
+    confirmText.textContent = 'You are about to vote for ' + pendingParty + '. This cannot be undone.';
+    confirmPanel.classList.add('visible');
+    statusBar.className = 'status-bar warn';
+    statusBar.textContent = 'Please confirm your selection below.';
+  });
+});
+
+btnCancel.addEventListener('click', () => {
+  confirmPanel.classList.remove('visible');
+  statusBar.className = 'status-bar';
+  statusBar.textContent = 'Vote cancelled. Press a button to try again.';
+  pendingParty = null; pendingBtn = null;
+});
+
+btnConfirm.addEventListener('click', () => {
+  if (!pendingParty || hasVoted) return;
+  const party = pendingParty, btn = pendingBtn;
+  pendingParty = null; pendingBtn = null;
+  hasVoted = true;
+
+  evmBtns.forEach(b => b.disabled = true);
+  confirmPanel.classList.remove('visible');
+
+  fetch('/castvote', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
+    body: JSON.stringify({ party: party })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.status === 'success') {
+      btn.classList.add('pressed');
+      btn.closest('.party-row').classList.add('voted-row');
+      lightGreen.style.opacity = '1';
+      statusBar.className = 'status-bar success';
+      statusBar.textContent = 'Vote recorded for ' + party + '. Thank you!';
+      doneMsg.textContent = 'Your vote for ' + party + ' has been recorded securely.';
+      setTimeout(() => go('done'), 1800);
+    } else if (data.status === 'already_voted') {
+      alreadyBanner.style.display = 'block';
+      statusBar.className = 'status-bar warn';
+      statusBar.textContent = 'You have already voted. Each person can only vote once.';
+    } else if (data.status === 'not_logged_in') {
+      window.location.href = '/login';
+    }
+  })
+  .catch(() => {
+    statusBar.className = 'status-bar';
+    statusBar.textContent = 'Network error. Please try again.';
+    hasVoted = false;
+    evmBtns.forEach(b => b.disabled = false);
+  });
+});
+
+function getCookie(name) {
+  const v = '; ' + document.cookie;
+  const p = v.split('; ' + name + '=');
+  if (p.length === 2) return p.pop().split(';').shift();
+}
+</script>
