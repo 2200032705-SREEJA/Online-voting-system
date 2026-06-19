@@ -192,6 +192,14 @@ body::before{
     font-size:14px;
     color:#FF6B00;
 }
+.optional-tag{
+    font-size:10px;
+    font-weight:400;
+    color:#999;
+    text-transform:none;
+    letter-spacing:0;
+    margin-left:2px;
+}
 .field-input{
     width:100%;
     padding:11px 14px;
@@ -217,6 +225,35 @@ body::before{
 }
 .field-hint b{
     color:#006064;
+}
+
+/* Requirements box */
+.req-box{
+    background:#f0fafa;
+    border:1px solid #b2dfdb;
+    border-radius:8px;
+    padding:10px 14px;
+    margin-top:7px;
+    font-size:11px;
+    color:#444;
+    line-height:1.8;
+}
+.req-box .req-title{
+    font-weight:600;
+    color:#006064;
+    margin-bottom:4px;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.4px;
+}
+.req-box ul{
+    padding-left:16px;
+}
+.req-box ul li{
+    margin-bottom:1px;
+}
+.req-box ul li b{
+    color:#004D40;
 }
 
 /* Two-column grid */
@@ -406,6 +443,7 @@ body::before{
             <div>
                 <div class="field-label">
                     <i class="ti ti-id" aria-hidden="true"></i> Aadhar
+                    <span class="optional-tag">(Optional)</span>
                 </div>
                 <input
                     class="field-input"
@@ -414,8 +452,33 @@ body::before{
                     value="{{ aadhar|default:'' }}"
                     placeholder="12-digit number"
                     pattern="[0-9]{12}"
-                    maxlength="12"
-                    required>
+                    maxlength="12">
+            </div>
+        </div>
+
+        <!-- Voter ID -->
+        <div class="field-row">
+            <div class="field-label">
+                <i class="ti ti-credit-card" aria-hidden="true"></i> Voter ID
+            </div>
+            <input
+                class="field-input"
+                type="text"
+                name="voter_id"
+                value="{{ voter_id|default:'' }}"
+                placeholder="e.g. ABC1234567"
+                maxlength="10"
+                pattern="[A-Z]{3}[0-9]{7}"
+                required>
+            <div class="req-box">
+                <div class="req-title">📋 Voter ID Requirements</div>
+                <ul>
+                    <li>Exactly <b>10 characters</b> total</li>
+                    <li>First <b>3 characters</b> — Capital letters only (A–Z) &nbsp;e.g. <b>ABC</b></li>
+                    <li>Last <b>7 characters</b> — Numbers only (0–9) &nbsp;e.g. <b>1234567</b></li>
+                    <li>Example: <b>ABC1234567</b></li>
+                    <li>Find it on your <b>EPIC card</b> (Electors Photo Identity Card)</li>
+                </ul>
             </div>
         </div>
 
@@ -447,32 +510,27 @@ body::before{
         </div>
 
         </form>
+
+        <!-- Welcome button -->
+        <div style="text-align:center; margin-top:20px;">
+            <a href="{% url 'root' %}" style="
+                display:inline-flex;
+                align-items:center;
+                gap:8px;
+                padding:11px 24px;
+                border-radius:4px;
+                background:transparent;
+                border:1.5px solid #006064;
+                color:#006064;
+                font-size:13px;
+                font-weight:600;
+                text-decoration:none;
+                letter-spacing:0.04em;
+                transition:all 0.25s;
+            " onmouseover="this.style.background='#006064';this.style.color='#fff'"
+               onmouseout="this.style.background='transparent';this.style.color='#006064'">
+                <i class="fas fa-home"></i> Welcome to VoteBharat
+            </a>
+        </div>
         
-
-<!-- Add this below -->
-<div style="text-align:center; margin-top:20px;">
-  <a href="{% url 'root' %}" style="
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:11px 24px;
-    border-radius:4px;
-    background:transparent;
-    border:1.5px solid #C8102E;
-    color:#C8102E;
-    font-size:13px;
-    font-weight:600;
-    text-decoration:none;
-    letter-spacing:0.04em;
-    transition:all 0.25s;
-  " onmouseover="this.style.background='#C8102E';this.style.color='#fff'"
-     onmouseout="this.style.background='transparent';this.style.color='#C8102E'">
-    <i class="fas fa-home"></i> Welcome to VoteBharat
-  </a>
-</div>
-
-    </div><!-- /form-body -->
-</div><!-- /card -->
-
-</body>
-</html>
+        

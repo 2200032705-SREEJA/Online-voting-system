@@ -17,7 +17,8 @@ class signup(models.Model):
     password = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
     phone = models.CharField(max_length=10, blank=True, default="")
-    aadhar = models.CharField(max_length=12, blank=True, default="")
+    aadhar = models.CharField(max_length=12, blank=True, default="")       # Optional
+    voter_id = models.CharField(max_length=10, unique=True, blank=True, default="")  # NEW
     dob = models.DateField(null=True, blank=True)
     voted = models.BooleanField(default=False)
     voted_party = models.CharField(max_length=100, blank=True, default="")
@@ -53,7 +54,7 @@ class Candidate(models.Model):
 
 
 class Vote(models.Model):
-    voter = models.OneToOneField(signup, on_delete=models.CASCADE)  # ← OneToOne ensures one vote per user at DB level
+    voter = models.OneToOneField(signup, on_delete=models.CASCADE)
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     voted_at = models.DateTimeField(auto_now_add=True)
 
