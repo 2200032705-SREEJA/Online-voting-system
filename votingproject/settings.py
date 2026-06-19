@@ -71,19 +71,25 @@ TEMPLATES = [
 WSGI_APPLICATION = 'votingproject.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'OVS',
-        'USER': 'postgres',
-        'PASSWORD': 'sreeja1234',
-        'HOST': 'localhost',
-        'PORT': '5433',
+# Force SQLite on Vercel (PostgreSQL localhost doesn't exist there)
+if os.environ.get("VERCEL") or not os.environ.get("DJANGO_LOCAL"):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "/tmp/db.sqlite3",
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "OVS",
+            "USER": "postgres",
+            "PASSWORD": "sreeja1234",
+            "HOST": "localhost",
+            "PORT": "5433",
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
