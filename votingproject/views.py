@@ -385,3 +385,21 @@ def createregister(request):
         )
 
     return render(request, 'voterregistration.html')
+def partyvotes(request):
+    from django.db.models import Count
+    
+    party_votes = [
+        {'party': row['voted_party'], 'total_votes': row['total_votes']}
+        for row in signup.objects
+            .filter(voted=True)
+            .values('voted_party')
+            .annotate(total_votes=Count('voted_party'))
+            .order_by('-total_votes')
+    ]
+    
+    total_voted = signup.objects.filter(voted=True).count()
+    
+    return render(request, 'partyvotes.html', {
+        'party_votes': party_votes,
+        'total_voted': total_voted,
+    })
