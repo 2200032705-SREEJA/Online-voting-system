@@ -8,15 +8,18 @@ https://docs.djangoproject.com/en/4.2/howto/deployment/wsgi/
 """
 
 import os
+import django
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'votingproject.settings')
 
-# Auto-migrate on cold start (needed for Vercel's ephemeral /tmp)
+# Must call setup() before any django commands
+django.setup()
+
 from django.core.management import call_command
 try:
     call_command('migrate', '--run-syncdb', verbosity=0)
-except Exception:
-    pass
+except Exception as e:
+    print(f"Migration error: {e}")
 
 application = get_wsgi_application()
