@@ -15,7 +15,7 @@
 
         /* ── Navbar ── */
         .navbar {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            background: linear-gradient(135deg, #16213e, #0f2027);
             color: #fff;
             padding: 0 32px;
             height: 64px;
@@ -29,7 +29,7 @@
             font-weight: 700;
             letter-spacing: 0.5px;
         }
-        .navbar .brand span { color: #4e8cff; }
+        .navbar .brand span { color: #2dd4bf; }
         .navbar-links { display: flex; gap: 8px; }
         .navbar-links a {
             color: #ccc;
@@ -40,15 +40,15 @@
             transition: background 0.2s;
         }
         .navbar-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
-        .navbar-links a.active { background: #4e8cff; color: #fff; }
+        .navbar-links a.active { background: #2dd4bf; color: #0f2027; font-weight: 600; }
 
         /* ── Page body ── */
-        .page { padding: 32px 28px; max-width: 1100px; margin: 0 auto; }
+        .page { padding: 32px 28px; max-width: 1100px; margin: -40px auto 0 auto; position: relative; z-index: 10; }
 
         .page-title {
             font-size: 24px;
             font-weight: 700;
-            color: #1a1a2e;
+            color: #16213e;
             margin-bottom: 6px;
         }
         .page-subtitle { font-size: 14px; color: #888; margin-bottom: 28px; }
@@ -71,9 +71,9 @@
             transition: transform 0.2s;
         }
         .card:hover { transform: translateY(-3px); }
-        .card.blue  { border-top-color: #4e8cff; }
+        .card.blue  { border-top-color: #2dd4bf; }
         .card.green { border-top-color: #28a745; }
-        .card.orange{ border-top-color: #fd7e14; }
+        .card.orange{ border-top-color: #f97316; }
 
         .card .icon { font-size: 32px; margin-bottom: 10px; }
         .card .label {
@@ -84,9 +84,9 @@
             letter-spacing: 0.8px;
             margin-bottom: 8px;
         }
-        .card.blue   .number { color: #4e8cff; }
+        .card.blue   .number { color: #2dd4bf; }
         .card.green  .number { color: #28a745; }
-        .card.orange .number { color: #fd7e14; }
+        .card.orange .number { color: #f97316; }
         .card .number { font-size: 48px; font-weight: 800; line-height: 1; }
 
         /* ── Section ── */
@@ -99,11 +99,11 @@
         .section-title {
             font-size: 18px;
             font-weight: 700;
-            color: #1a1a2e;
+            color: #16213e;
         }
         .badge-total {
-            background: #e8f0fe;
-            color: #4e8cff;
+            background: #e6fbf8;
+            color: #0d9488;
             font-size: 13px;
             font-weight: 600;
             padding: 4px 12px;
@@ -121,7 +121,7 @@
 
         table { width: 100%; border-collapse: collapse; }
 
-        thead tr { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+        thead tr { background: linear-gradient(135deg, #16213e, #0f2027); }
         thead th {
             padding: 16px 20px;
             text-align: left;
@@ -134,7 +134,7 @@
 
         tbody tr { border-bottom: 1px solid #f0f0f0; transition: background 0.15s; }
         tbody tr:last-child { border-bottom: none; }
-        tbody tr:hover { background: #f8f9ff; }
+        tbody tr:hover { background: #f3fdfb; }
         tbody td { padding: 16px 20px; font-size: 15px; color: #333; }
 
         .rank {
@@ -154,8 +154,8 @@
 
         .vote-badge {
             display: inline-block;
-            background: #e8f0fe;
-            color: #4e8cff;
+            background: #e6fbf8;
+            color: #0d9488;
             font-weight: 700;
             font-size: 14px;
             border-radius: 20px;
@@ -172,7 +172,7 @@
         }
         .bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, #4e8cff, #7ba7ff);
+            background: linear-gradient(90deg, #2dd4bf, #5eead4);
             border-radius: 6px;
             transition: width 1s ease;
         }
@@ -205,6 +205,23 @@
             border-radius: 20px;
         }
 
+        /* ── CTA button (inspired by reference "Vote" pill) ── */
+        .cta-button {
+            display: inline-block;
+            background: #f97316;
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 10px 28px;
+            border-radius: 999px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(249,115,22,0.35);
+            transition: background 0.2s, transform 0.15s;
+        }
+        .cta-button:hover { background: #ea6810; transform: translateY(-1px); }
+
         /* ── Footer ── */
         .footer {
             text-align: center;
@@ -213,41 +230,33 @@
             color: #aaa;
         }
         .hero-banner{
-    background: linear-gradient(135deg,#1a1a2e,#16213e);
-    color:white;
-    text-align:center;
-    padding:50px 20px;
-}
+            background: linear-gradient(135deg,#16213e,#0f2027);
+            color:white;
+            text-align:center;
+            padding:50px 20px;
+        }
 
-.hero-banner h1{
-    font-size:40px;
-    margin-bottom:10px;
-}
+        .hero-banner h1{
+            font-size:40px;
+            margin-bottom:10px;
+        }
 
-.hero-banner p{
-    color:#d6d6d6;
-    font-size:16px;
-}
+        .hero-banner p{
+            color:#d6d6d6;
+            font-size:16px;
+        }
 
-.dashboard-banner{
-    width:100%;
-    height:280px;
-    overflow:hidden;
-}
+        .dashboard-banner{
+            width:100%;
+            height:280px;
+            overflow:hidden;
+        }
 
-.dashboard-banner img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-.page{
-    padding:32px 28px;
-    max-width:1100px;
-    margin:-40px auto 0 auto;
-    position:relative;
-    z-index:10;
-}
+        .dashboard-banner img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+        }
     </style>
 </head>
 <body>
@@ -297,9 +306,9 @@
     <div class="page-subtitle">Live overview of voting statistics</div>
 
 <div class="footer">
-    Online Voting System © 2024
+    Online Voting System © 2026
 </div>
 </div>
 
 </body>
-</html> 
+</html>

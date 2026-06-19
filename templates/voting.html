@@ -1,273 +1,273 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choose your Party</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Choose your Party</title>
+        <style>
+            * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            background: linear-gradient(160deg, #eef1fb 0%, #dde3f7 50%, #c9d2f0 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 24px 12px;
-        }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+                background: linear-gradient(160deg, #eef1fb 0%, #dde3f7 50%, #c9d2f0 100%);
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 24px 12px;
+            }
 
-        .app-shell {
-            width: 100%;
-            max-width: 420px;
-            background: #fff;
-            min-height: calc(100vh - 48px);
-            border-radius: 28px;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(22,39,92,0.18);
-        }
+            .app-shell {
+                width: 100%;
+                max-width: 420px;
+                background: #fff;
+                min-height: calc(100vh - 48px);
+                border-radius: 28px;
+                overflow: hidden;
+                box-shadow: 0 20px 50px rgba(22,39,92,0.18);
+            }
 
-        /* Header */
-        .app-header {
-            background: linear-gradient(135deg, #16275c 0%, #2d3f8f 55%, #5b4ba8 100%);
-            color: #fff;
-            padding: 28px 24px 22px;
-            border-radius: 0 0 22px 22px;
-        }
+            /* Header */
+            .app-header {
+                background: linear-gradient(135deg, #16275c 0%, #2d3f8f 55%, #5b4ba8 100%);
+                color: #fff;
+                padding: 28px 24px 22px;
+                border-radius: 0 0 22px 22px;
+            }
 
-        .app-header h1 {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
+            .app-header h1 {
+                font-size: 22px;
+                font-weight: 700;
+                margin-bottom: 6px;
+            }
 
-        .app-header p {
-            font-size: 13px;
-            color: rgba(255,255,255,0.65);
-        }
+            .app-header p {
+                font-size: 13px;
+                color: rgba(255,255,255,0.65);
+            }
 
-        .section-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 22px 24px 12px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
+            .section-label {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin: 22px 24px 12px;
+                font-size: 13px;
+                font-weight: 600;
+                color: #6b7280;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+            }
 
-        .section-label::before {
-            content: "🗳";
-            font-size: 14px;
-        }
+            .section-label::before {
+                content: "🗳";
+                font-size: 14px;
+            }
 
-        /* Banner */
-        #already-voted-banner {
-            display: none;
-            margin: 0 20px 16px;
-            background: #fff7e0;
-            border: 1px solid #ffe08a;
-            color: #8a6d00;
-            border-radius: 12px;
-            padding: 12px 16px;
-            font-size: 13px;
-            text-align: center;
-        }
+            /* Banner */
+            #already-voted-banner {
+                display: none;
+                margin: 0 20px 16px;
+                background: #fff7e0;
+                border: 1px solid #ffe08a;
+                color: #8a6d00;
+                border-radius: 12px;
+                padding: 12px 16px;
+                font-size: 13px;
+                text-align: center;
+            }
 
-        /* List of party cards */
-        .voting-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding: 0 20px 20px;
-        }
+            /* List of party cards */
+            .voting-wrapper {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                padding: 0 20px 20px;
+            }
 
-        .picture-container {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            background: #fff;
-            border: 1px solid #e8eaee;
-            border-radius: 16px;
-            padding: 14px 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-        }
+            .picture-container {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                background: #fff;
+                border: 1px solid #e8eaee;
+                border-radius: 16px;
+                padding: 14px 16px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            }
 
-        .picture {
-            width: 48px;
-            height: 48px;
-            min-width: 48px;
-            border-radius: 12px;
-            background-size: cover;
-            background-position: center;
-            background-color: #f1f2f5;
-            border: 1px solid #e2e4e9;
-        }
+            .picture {
+                width: 48px;
+                height: 48px;
+                min-width: 48px;
+                border-radius: 12px;
+                background-size: cover;
+                background-position: center;
+                background-color: #f1f2f5;
+                border: 1px solid #e2e4e9;
+            }
 
-        .name {
-            flex: 1;
-        }
+            .name {
+                flex: 1;
+            }
 
-        .name h2 {
-            font-size: 15px;
-            font-weight: 600;
-            color: #1a1d29;
-        }
+            .name h2 {
+                font-size: 15px;
+                font-weight: 600;
+                color: #1a1d29;
+            }
 
-        .vote-button {
-            padding: 9px 18px;
-            background-color: #16275c;
-            color: #fff;
-            border: none;
-            border-radius: 999px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
+            .vote-button {
+                padding: 9px 18px;
+                background-color: #16275c;
+                color: #fff;
+                border: none;
+                border-radius: 999px;
+                cursor: pointer;
+                font-size: 13px;
+                font-weight: 600;
+                white-space: nowrap;
+            }
 
-        .vote-button:hover:not(:disabled) { background-color: #0d1b3e; }
-        .vote-button:disabled { cursor: not-allowed; opacity: 0.4; }
-        .vote-button.voted-button { background-color: #1f9d55; opacity: 1; }
+            .vote-button:hover:not(:disabled) { background-color: #0d1b3e; }
+            .vote-button:disabled { cursor: not-allowed; opacity: 0.4; }
+            .vote-button.voted-button { background-color: #1f9d55; opacity: 1; }
 
-        #status-message {
-            margin: 4px 20px 0;
-            font-size: 14px;
-            font-weight: 500;
-            text-align: center;
-        }
+            #status-message {
+                margin: 4px 20px 0;
+                font-size: 14px;
+                font-weight: 500;
+                text-align: center;
+            }
 
-        .home-btn {
-            display: none;
-            margin: 18px auto 24px;
-            width: calc(100% - 40px);
-            text-align: center;
-            padding: 12px;
-            background: #16275c;
-            color: white;
-            text-decoration: none;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .home-btn:hover { background: #0d1b3e; }
-    </style>
-</head>
-<body>
+            .home-btn {
+                display: none;
+                margin: 18px auto 24px;
+                width: calc(100% - 40px);
+                text-align: center;
+                padding: 12px;
+                background: #16275c;
+                color: white;
+                text-decoration: none;
+                border-radius: 14px;
+                font-size: 14px;
+                font-weight: 600;
+            }
+            .home-btn:hover { background: #0d1b3e; }
+        </style>
+    </head>
+    <body>
 
-<div class="app-shell">
+    <div class="app-shell">
 
-    {% csrf_token %}
+        {% csrf_token %}
 
-    <div class="app-header">
-        <h1>Choose your Party</h1>
-        <p>Cast your vote — one choice per account</p>
+        <div class="app-header">
+            <h1>Choose your Party</h1>
+            <p>Cast your vote — one choice per account</p>
+        </div>
+
+        <div id="already-voted-banner">
+            ⚠️ You have already voted for {{ voted_party }}.
+        </div>
+
+        <div class="section-label">Political Parties</div>
+
+        <div class="voting-wrapper">
+            <div class="picture-container">
+                <div class="picture" style="background-image: url('https://www.telugubulletin.com/wp-content/uploads/2019/11/160718-tdp.jpg');"></div>
+                <div class="name"><h2>TDP</h2></div>
+                <button class="vote-button" data-party="TDP">Vote</button>
+            </div>
+            <div class="picture-container">
+                <div class="picture" style="background-image: url('https://th.bing.com/th/id/R.328f33f68eadc2ee7ca0c58a1764716c?rik=%2bRJNQ1xsQpP1Iw&riu=http%3a%2f%2f2.bp.blogspot.com%2f-AZG2T7MfwzI%2fUy5604lO_VI%2fAAAAAAAAAYA%2f4DK0QoQa2yw%2fs1600%2fJana-Sena-Party-Logo-Wallpaper.jpg&ehk=ryJhFVj1HzCjV8Pc4TiTH2FWJaee1f1OOadUwIQXmNw%3d&risl=&pid=ImgRaw&r=0');"></div>
+                <div class="name"><h2>JANASENA</h2></div>
+                <button class="vote-button" data-party="JANASENA">Vote</button>
+            </div>
+            <div class="picture-container">
+                <div class="picture" style="background-image: url('https://4.bp.blogspot.com/-URiCjwBMxVc/TtzXRyJi90I/AAAAAAAADj8/MrZd0T5ewIg/s1600/bjp-flag.jpg');"></div>
+                <div class="name"><h2>BJP</h2></div>
+                <button class="vote-button" data-party="BJP">Vote</button>
+            </div>
+            <div class="picture-container">
+                <div class="picture" style="background-image: url('https://qph.fs.quoracdn.net/main-qimg-2b60b97c4135f698bd9f5a7dab9d93ec');"></div>
+                <div class="name"><h2>YSRCP</h2></div>
+                <button class="vote-button" data-party="YSRCP">Vote</button>
+            </div>
+            <div class="picture-container">
+                <div class="picture" style="background-image: url('https://www.oneindia.com/img/2016/03/nota-04-1457086162.jpg');"></div>
+                <div class="name"><h2>NOTA</h2></div>
+                <button class="vote-button" data-party="NOTA">Vote</button>
+            </div>
+        </div>
+
+        <div id="status-message"></div>
+        <a href="{% url 'home' %}" class="home-btn" id="home-btn">🏠 Back to Home</a>
+
     </div>
 
-    <div id="already-voted-banner">
-        ⚠️ You have already voted for {{ voted_party }}.
-    </div>
+    <script>
+        const alreadyVoted = "{{ already_voted }}" === "True";
 
-    <div class="section-label">Political Parties</div>
+        const allButtons = document.querySelectorAll('.vote-button');
+        const statusMsg   = document.getElementById('status-message');
+        const banner      = document.getElementById('already-voted-banner');
+        const homeBtn     = document.getElementById('home-btn');
 
-    <div class="voting-wrapper">
-        <div class="picture-container">
-            <div class="picture" style="background-image: url('https://www.telugubulletin.com/wp-content/uploads/2019/11/160718-tdp.jpg');"></div>
-            <div class="name"><h2>TDP</h2></div>
-            <button class="vote-button" data-party="TDP">Vote</button>
-        </div>
-        <div class="picture-container">
-            <div class="picture" style="background-image: url('https://th.bing.com/th/id/R.328f33f68eadc2ee7ca0c58a1764716c?rik=%2bRJNQ1xsQpP1Iw&riu=http%3a%2f%2f2.bp.blogspot.com%2f-AZG2T7MfwzI%2fUy5604lO_VI%2fAAAAAAAAAYA%2f4DK0QoQa2yw%2fs1600%2fJana-Sena-Party-Logo-Wallpaper.jpg&ehk=ryJhFVj1HzCjV8Pc4TiTH2FWJaee1f1OOadUwIQXmNw%3d&risl=&pid=ImgRaw&r=0');"></div>
-            <div class="name"><h2>JENASENA</h2></div>
-            <button class="vote-button" data-party="JENASENA">Vote</button>
-        </div>
-        <div class="picture-container">
-            <div class="picture" style="background-image: url('https://4.bp.blogspot.com/-URiCjwBMxVc/TtzXRyJi90I/AAAAAAAADj8/MrZd0T5ewIg/s1600/bjp-flag.jpg');"></div>
-            <div class="name"><h2>BJP</h2></div>
-            <button class="vote-button" data-party="BJP">Vote</button>
-        </div>
-        <div class="picture-container">
-            <div class="picture" style="background-image: url('https://qph.fs.quoracdn.net/main-qimg-2b60b97c4135f698bd9f5a7dab9d93ec');"></div>
-            <div class="name"><h2>YSRCP</h2></div>
-            <button class="vote-button" data-party="YSRCP">Vote</button>
-        </div>
-        <div class="picture-container">
-            <div class="picture" style="background-image: url('https://www.oneindia.com/img/2016/03/nota-04-1457086162.jpg');"></div>
-            <div class="name"><h2>NOTA</h2></div>
-            <button class="vote-button" data-party="NOTA">Vote</button>
-        </div>
-    </div>
+        if (alreadyVoted) {
+            banner.style.display = 'block';
+            allButtons.forEach(btn => btn.disabled = true);
+            statusMsg.style.color = '#8a6d00';
+            statusMsg.textContent = 'You have already voted for {{ voted_party }}. Thank you!';
+            window.location.href = "/home";
+        }
 
-    <div id="status-message"></div>
-    <a href="/checkaminlogin" class="home-btn" id="home-btn">🏠 Back to Home</a>
+        allButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (alreadyVoted) return;
 
-</div>
+                const party = button.dataset.party;
+                if (!confirm(`Vote for ${party}? This cannot be undone.`)) return;
 
-<script>
-    const alreadyVoted = "{{ already_voted }}" === "True";
-
-    const allButtons = document.querySelectorAll('.vote-button');
-    const statusMsg   = document.getElementById('status-message');
-    const banner      = document.getElementById('already-voted-banner');
-    const homeBtn     = document.getElementById('home-btn');
-
-    if (alreadyVoted) {
-        banner.style.display = 'block';
-        allButtons.forEach(btn => btn.disabled = true);
-        statusMsg.style.color = '#8a6d00';
-        statusMsg.textContent = 'You have already voted for {{ voted_party }}. Thank you!';
-        homeBtn.style.display = 'block';
-    }
-
-    allButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            if (alreadyVoted) return;
-
-            const party = button.dataset.party;
-            if (!confirm(`Vote for ${party}? This cannot be undone.`)) return;
-
-            fetch('/castvote', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken'),
-                },
-                body: JSON.stringify({ party: party })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    allButtons.forEach(btn => btn.disabled = true);
-                    button.textContent = '✔ Voted';
-                    button.classList.add('voted-button');
-                    statusMsg.style.color = '#1f9d55';
-                    statusMsg.textContent = `✅ Successfully voted for ${party}. Thank you!`;
-                    homeBtn.style.display = 'block';
-                } else if (data.status === 'already_voted') {
-                    banner.style.display = 'block';
-                    allButtons.forEach(btn => btn.disabled = true);
-                    statusMsg.style.color = '#8a6d00';
-                    statusMsg.textContent = '⚠️ You have already voted.';
-                } else if (data.status === 'not_logged_in') {
-                    alert('Session expired. Please login again.');
-                    window.location.href = '/login';
-                }
-            })
-            .catch(err => {
-                statusMsg.style.color = '#dc3545';
-                statusMsg.textContent = 'Something went wrong: ' + err.message;
+                fetch('/castvote', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify({ party: party })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        allButtons.forEach(btn => btn.disabled = true);
+                        button.textContent = '✔ Voted';
+                        button.classList.add('voted-button');
+                        statusMsg.style.color = '#1f9d55';
+                        statusMsg.textContent = `✅ Successfully voted for ${party}. Thank you!`;
+                        homeBtn.style.display = 'block';
+                    } else if (data.status === 'already_voted') {
+                        banner.style.display = 'block';
+                        allButtons.forEach(btn => btn.disabled = true);
+                        statusMsg.style.color = '#8a6d00';
+                        statusMsg.textContent = '⚠️ You have already voted.';
+                    } else if (data.status === 'not_logged_in') {
+                        alert('Session expired. Please login again.');
+                        window.location.href = '/login';
+                    }
+                })
+                .catch(err => {
+                    statusMsg.style.color = '#dc3545';
+                    statusMsg.textContent = 'Something went wrong: ' + err.message;
+                });
             });
         });
-    });
 
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-</script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+    </script>
 
-</body>
-</html>
+    </body>
+    </html>

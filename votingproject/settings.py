@@ -76,7 +76,7 @@ if os.environ.get("VERCEL") or not os.environ.get("DJANGO_LOCAL"):
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": "/tmp/db.sqlite3",
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
 else:
