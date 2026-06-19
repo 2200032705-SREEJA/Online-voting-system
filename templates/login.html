@@ -167,6 +167,28 @@
           <button type="submit" class="submit-btn">Log in</button>
         </form>
         <p class="signup-line">New here? <a href="{% url 'signup' %}">Register to vote</a></p>
+
+<!-- Add this below -->
+<div style="text-align:center; margin-top:20px;">
+  <a href="{% url 'root' %}" style="
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:11px 24px;
+    border-radius:4px;
+    background:transparent;
+    border:1.5px solid #C8102E;
+    color:#C8102E;
+    font-size:13px;
+    font-weight:600;
+    text-decoration:none;
+    letter-spacing:0.04em;
+    transition:all 0.25s;
+  " onmouseover="this.style.background='#C8102E';this.style.color='#fff'"
+     onmouseout="this.style.background='transparent';this.style.color='#C8102E'">
+    <i class="fas fa-home"></i> Welcome to VoteBharat
+  </a>
+</div>
       </div>
     </section>
   </div>
