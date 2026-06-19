@@ -3,169 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Picture Voting Animation</title>
+    <title>Choose your Party</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(160deg, #eef1fb 0%, #dde3f7 50%, #c9d2f0 100%);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-color: #f0f0f0;
-            padding: 30px 20px;
+            padding: 24px 12px;
         }
 
+        .app-shell {
+            width: 100%;
+            max-width: 420px;
+            background: #fff;
+            min-height: calc(100vh - 48px);
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(22,39,92,0.18);
+        }
+
+        /* Header */
+        .app-header {
+            background: linear-gradient(135deg, #16275c 0%, #2d3f8f 55%, #5b4ba8 100%);
+            color: #fff;
+            padding: 28px 24px 22px;
+            border-radius: 0 0 22px 22px;
+        }
+
+        .app-header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .app-header p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.65);
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 22px 24px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .section-label::before {
+            content: "🗳";
+            font-size: 14px;
+        }
+
+        /* Banner */
+        #already-voted-banner {
+            display: none;
+            margin: 0 20px 16px;
+            background: #fff7e0;
+            border: 1px solid #ffe08a;
+            color: #8a6d00;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        /* List of party cards */
         .voting-wrapper {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
+            flex-direction: column;
+            gap: 12px;
+            padding: 0 20px 20px;
         }
 
         .picture-container {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             background: #fff;
-            border: 1px solid #ddd;
+            border: 1px solid #e8eaee;
             border-radius: 16px;
-            padding: 24px 20px;
-            width: 200px;
-            animation: slideIn 1s ease-out;
+            padding: 14px 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
         .picture {
-            width: 150px;
-            height: 150px;
-            border: 2px solid #333;
-            border-radius: 8px;
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            border-radius: 12px;
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
+            background-color: #f1f2f5;
+            border: 1px solid #e2e4e9;
         }
 
-        .name h2 { font-size: 16px; font-weight: 600; text-align: center; color: #333; }
+        .name {
+            flex: 1;
+        }
+
+        .name h2 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1d29;
+        }
 
         .vote-button {
-            padding: 10px 0;
-            width: 100%;
-            background-color: #007bff;
+            padding: 9px 18px;
+            background-color: #16275c;
             color: #fff;
             border: none;
-            border-radius: 15px;
+            border-radius: 999px;
             cursor: pointer;
-            font-size: 15px;
-            transition: background-color 0.2s;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
         }
 
-        .vote-button:hover:not(:disabled) { background-color: #0056b3; }
-        .vote-button:disabled { cursor: not-allowed; opacity: 0.5; }
-        .vote-button.voted-button { background-color: #28a745; opacity: 1; font-weight: 600; }
+        .vote-button:hover:not(:disabled) { background-color: #0d1b3e; }
+        .vote-button:disabled { cursor: not-allowed; opacity: 0.4; }
+        .vote-button.voted-button { background-color: #1f9d55; opacity: 1; }
 
         #status-message {
-            margin-top: 30px;
-            font-size: 16px;
-            font-weight: 500;
-            text-align: center;
-            min-height: 24px;
-        }
-
-        @keyframes slideIn {
-            0%   { transform: translateX(-100%); opacity: 0; }
-            100% { transform: translateX(0);     opacity: 1; }
-        }
-
-        #already-voted-banner {
-            display: none;
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            color: #856404;
-            border-radius: 12px;
-            padding: 14px 24px;
-            margin-bottom: 24px;
-            font-size: 15px;
+            margin: 4px 20px 0;
+            font-size: 14px;
             font-weight: 500;
             text-align: center;
         }
 
-        #confirm-overlay {
+        .home-btn {
             display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-        }
-        #confirm-overlay.show { display: flex; }
-
-        #confirm-box {
-            background: #fff;
-            border-radius: 16px;
-            padding: 32px 28px;
-            max-width: 320px;
-            width: 90%;
+            margin: 18px auto 24px;
+            width: calc(100% - 40px);
             text-align: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            padding: 12px;
+            background: #16275c;
+            color: white;
+            text-decoration: none;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
         }
-        #confirm-box h3 { font-size: 18px; font-weight: 600; color: #222; margin-bottom: 8px; }
-        #confirm-box p  { font-size: 14px; color: #666; margin-bottom: 24px; }
-
-        .confirm-actions { display: flex; gap: 12px; justify-content: center; }
-
-        .btn-cancel {
-            padding: 10px 28px; border-radius: 10px;
-            border: 1px solid #ccc; background: #fff;
-            color: #333; font-size: 14px; cursor: pointer;
-        }
-        .btn-cancel:hover { background: #f5f5f5; }
-
-        .btn-confirm {
-            padding: 10px 28px; border-radius: 10px;
-            border: none; background: #007bff;
-            color: #fff; font-size: 14px; font-weight: 600; cursor: pointer;
-        }
-        .btn-confirm:hover { background: #0056b3; }
-        .home-btn{
-    display:inline-block;
-    margin-top:20px;
-    padding:12px 28px;
-    background:#007bff;
-    color:white;
-    text-decoration:none;
-    border-radius:12px;
-    font-size:15px;
-    font-weight:600;
-    transition:0.3s;
-}
-
-.home-btn:hover{
-    background:#0056b3;
-    
-}
+        .home-btn:hover { background: #0d1b3e; }
     </style>
 </head>
 <body>
 
+<div class="app-shell">
+
     {% csrf_token %}
 
-    <div id="already-voted-banner">
-    ⚠️ You have already cast your vote for {{ voted_party }}. Each person can only vote once.
+    <div class="app-header">
+        <h1>Choose your Party</h1>
+        <p>Cast your vote — one choice per account</p>
     </div>
 
-    <div id="confirm-overlay">
-        <div id="confirm-box">
-            <h3>Confirm Your Vote</h3>
-            <p id="confirm-text"></p>
-            <div class="confirm-actions">
-                <button class="btn-cancel" id="btn-cancel">Cancel</button>
-                <button class="btn-confirm" id="btn-confirm">Yes, Vote</button>
-            </div>
-        </div>
+    <div id="already-voted-banner">
+        ⚠️ You have already voted for {{ voted_party }}.
     </div>
+
+    <div class="section-label">Political Parties</div>
 
     <div class="voting-wrapper">
         <div class="picture-container">
@@ -194,123 +199,67 @@
             <button class="vote-button" data-party="NOTA">Vote</button>
         </div>
     </div>
-<div id="status-message"></div>
 
-<div id="home-container" style="display:none; text-align:center; margin-top:20px;">
-    <a href="/home" class="home-btn">
-        🏠 Home
-    </a>
-</div>
+    <div id="status-message"></div>
+    <a href="/checkaminlogin" class="home-btn" id="home-btn">🏠 Back to Home</a>
 
-<div id="home-container" style="display:none; text-align:center; margin-top:20px;">
-    <a href="/checkaminlogin" class="home-btn">
-        🏠 Back to Home
-    </a>
-</div>
-
-<div id="home-container" style="display:none; text-align:center; margin-top:20px;">
-    <a href="/checkaminlogin" class="home-btn">
-        🏠 Back to Home
-    </a>
-</div>
-<div id="home-container" style="display:none; text-align:center; margin-top:20px;">
-    <a href="/checkaminlogin" class="home-btn">
-    🏠 Home
-    </a>
 </div>
 
 <script>
     const alreadyVoted = "{{ already_voted }}" === "True";
 
-    const allButtons  = document.querySelectorAll('.vote-button');
-    const overlay     = document.getElementById('confirm-overlay');
-    const confirmText = document.getElementById('confirm-text');
-    const btnConfirm  = document.getElementById('btn-confirm');
-    const btnCancel   = document.getElementById('btn-cancel');
+    const allButtons = document.querySelectorAll('.vote-button');
     const statusMsg   = document.getElementById('status-message');
     const banner      = document.getElementById('already-voted-banner');
-
-    let pendingButton = null;
+    const homeBtn     = document.getElementById('home-btn');
 
     if (alreadyVoted) {
-    banner.style.display = 'block';
-    allButtons.forEach(btn => btn.disabled = true);
-    statusMsg.style.color = '#856404';
-    statusMsg.textContent = 'You have already voted for {{ voted_party }}. Thank you!';
-    document.getElementById('home-container').style.display = 'block';
-}
+        banner.style.display = 'block';
+        allButtons.forEach(btn => btn.disabled = true);
+        statusMsg.style.color = '#8a6d00';
+        statusMsg.textContent = 'You have already voted for {{ voted_party }}. Thank you!';
+        homeBtn.style.display = 'block';
+    }
 
     allButtons.forEach(button => {
         button.addEventListener('click', () => {
             if (alreadyVoted) return;
-            pendingButton = button;
-            confirmText.textContent = `Are you sure you want to vote for ${button.dataset.party}? This cannot be undone.`;
-            overlay.classList.add('show');
+
+            const party = button.dataset.party;
+            if (!confirm(`Vote for ${party}? This cannot be undone.`)) return;
+
+            fetch('/castvote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ party: party })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    allButtons.forEach(btn => btn.disabled = true);
+                    button.textContent = '✔ Voted';
+                    button.classList.add('voted-button');
+                    statusMsg.style.color = '#1f9d55';
+                    statusMsg.textContent = `✅ Successfully voted for ${party}. Thank you!`;
+                    homeBtn.style.display = 'block';
+                } else if (data.status === 'already_voted') {
+                    banner.style.display = 'block';
+                    allButtons.forEach(btn => btn.disabled = true);
+                    statusMsg.style.color = '#8a6d00';
+                    statusMsg.textContent = '⚠️ You have already voted.';
+                } else if (data.status === 'not_logged_in') {
+                    alert('Session expired. Please login again.');
+                    window.location.href = '/login';
+                }
+            })
+            .catch(err => {
+                statusMsg.style.color = '#dc3545';
+                statusMsg.textContent = 'Something went wrong: ' + err.message;
+            });
         });
-    });
-
-    btnCancel.addEventListener('click', () => {
-        overlay.classList.remove('show');
-        pendingButton = null;
-    });
-
-    btnConfirm.addEventListener('click', () => {
-        overlay.classList.remove('show');
-        if (!pendingButton) return;
-
-        const chosenButton = pendingButton;
-        const chosenParty  = chosenButton.dataset.party;
-        pendingButton = null;
-
-        fetch('/castvote', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken'),
-            },
-            body: JSON.stringify({ party: chosenParty })
-        })
-        .then(res => {
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            return res.json();
-        })
-        .then(data => {
-            if (data.status === 'success') {
-                allButtons.forEach(btn => {
-                    btn.disabled = true;
-                    btn.textContent = 'Vote';
-                    btn.classList.remove('voted-button');
-                });
-                chosenButton.textContent = '✔ Voted';
-                chosenButton.classList.add('voted-button');
-                statusMsg.style.color = '#28a745';
-                statusMsg.textContent = `✅ Successfully voted for ${chosenParty}. Thank you!`;
-                document.getElementById('home-container').style.display = 'block';
-                document.getElementById('home-container').style.display = 'block';
-                document.getElementById('home-container').style.display = 'block';
-
-            } else if (data.status === 'already_voted') {
-                banner.style.display = 'block';
-                allButtons.forEach(btn => btn.disabled = true);
-                statusMsg.style.color = '#856404';
-                statusMsg.textContent = '⚠️ You have already voted.';
-
-            } else if (data.status === 'not_logged_in') {
-                alert('Session expired. Please login again.');
-                window.location.href = '/login';
-            }
-        })
-        .catch(err => {
-            statusMsg.style.color = '#dc3545';
-            statusMsg.textContent = 'Something went wrong: ' + err.message;
-        });
-    });
-
-    overlay.addEventListener('click', e => {
-        if (e.target === overlay) {
-            overlay.classList.remove('show');
-            pendingButton = null;
-        }
     });
 
     function getCookie(name) {
